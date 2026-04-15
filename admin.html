@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Admin Portal | Luxury Estates</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-card {
+            background: rgba(255,255,255,0.98);
+            border-radius: 32px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 420px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header i {
+            font-size: 3rem;
+            color: #c2a15b;
+            margin-bottom: 1rem;
+        }
+
+        .login-header h2 {
+            font-size: 1.8rem;
+            color: #0f172a;
+            font-weight: 700;
+        }
+
+        .login-header p {
+            color: #5b6e8c;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #475569;
+            margin-bottom: 0.5rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #c2a15b;
+            box-shadow: 0 0 0 3px rgba(194,161,91,0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #c2a15b, #9a7b3e);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 0.8rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: none;
+        }
+
+        .security-badge {
+            text-align: center;
+            margin-top: 1.5rem;
+            font-size: 0.7rem;
+            color: #94a3b8;
+        }
+
+        /* Admin Dashboard Styles (hidden initially) */
+        .admin-wrapper {
+            display: none;
+        }
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100%;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            color: #e2e8f0;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            padding: 1.8rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-logo h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #c2a15b, #e2c28b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .sidebar-logo i {
+            color: #c2a15b;
+            margin-right: 8px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0 1rem;
+        }
+
+        .sidebar-menu li {
+            padding: 0.9rem 1.2rem;
+            margin: 0.3rem 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-menu li i {
+            width: 24px;
+        }
+
+        .sidebar-menu li:hover {
+            background: rgba(194, 161, 91, 0.2);
+        }
+
+        .sidebar-menu li.active {
+            background: linear-gradient(95deg, #c2a15b20, #c2a15b10);
+            border-left: 3px solid #c2a15b;
+            color: #c2a15b;
+        }
+
+        .logout-btn {
+            position: absolute;
+            bottom: 2rem;
+            width: calc(100% - 2rem);
+            margin: 0 1rem;
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid rgba(220,38,38,0.3);
+        }
+
+        .main-content {
+            margin-left: 280px;
+            padding: 1.5rem 2rem;
+        }
+
+        .top-bar {
+            background: white;
+            padding: 1rem 1.8rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.2rem;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .data-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-input {
+            padding: 0.6rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 40px;
+            width: 260px;
+            outline: none;
+        }
+
+        .btn-add {
+            background: #c2a15b;
+            color: white;
+            border: none;
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        th {
+            text-align: left;
+            padding: 1rem 0.8rem;
+            background: #f8fafc;
+            font-weight: 600;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 0.9rem 0.8rem;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .status-badge {
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-new { background: #dbeafe; color: #1e40af; }
+        .status-contacted { background: #fff7ed; color: #c2410c; }
+        .status-converted { background: #dcfce7; color: #15803d; }
+
+        .action-icons i {
+            margin: 0 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .fa-edit { color: #3b82f6; }
+        .fa-trash-alt { color: #ef4444; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 2rem;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 0.7rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: #1e293b;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            z-index: 9999;
+            display: none;
+        }
+
+        @media (max-width: 800px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div id="loginScreen" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-shield-alt"></i>
+                <h2>Admin Portal</h2>
+                <p>Restricted Access • Authorized Personnel Only</p>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label><i class="fas fa-user"></i> USERNAME</label>
+                    <input type="text" id="username" placeholder="Enter username" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label><i class="fas fa-lock"></i> PASSWORD</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                </div>
+                <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> Authenticate</button>
+                <div id="loginError" class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i> Invalid credentials. Access denied.
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-fingerprint"></i> Secure AES-256 Encrypted Session
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden until login) -->
+    <div id="adminDashboard" class="admin-wrapper">
+        <div class="sidebar">
+            <div class="sidebar-logo">
+                <h2><i class="fas fa-crown"></i> Elite Admin</h2>
+                <p style="font-size: 0.7rem; margin-top: 5px;">Firestore Manager</p>
+            </div>
+            <ul class="sidebar-menu">
+                <li data-collection="dashboard" class="active" onclick="switchCollection('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</li>
+                <li data-collection="properties" onclick="switchCollection('properties')"><i class="fas fa-building"></i> Properties</li>
+                <li data-collection="inquiries" onclick="switchCollection('inquiries')"><i class="fas fa-envelope"></i> Inquiries</li>
+                <li data-collection="contacts" onclick="switchCollection('contacts')"><i class="fas fa-phone"></i> Contacts</li>
+                <li data-collection="subscribers" onclick="switchCollection('subscribers')"><i class="fas fa-users"></i> Subscribers</li>
+                <li class="logout-btn" onclick="logout()" style="margin-top: 3rem; background: rgba(220,38,38,0.2);"><i class="fas fa-sign-out-alt"></i> Logout</li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="top-bar">
+                <div>
+                    <h1 id="currentPageTitle">Secure Dashboard</h1>
+                    <p>Welcome, Administrator | Full Database Access</p>
+                </div>
+                <div class="admin-avatar">
+                    <i class="fas fa-user-shield"></i>
+                    <span>SUPER ADMIN</span>
+                </div>
+            </div>
+
+            <div id="dashboardView">
+                <div class="stats-grid" id="statsGrid"></div>
+                <div class="data-card">
+                    <h3><i class="fas fa-database"></i> Firebase Collections Overview</h3>
+                    <p style="margin-top: 1rem;">All collections from Firestore are displayed below. Click on any collection in sidebar to manage records.</p>
+                    <div style="margin-top: 1.5rem; background:#f8fafc; padding:1rem; border-radius:16px;">
+                        <i class="fas fa-check-circle" style="color:#27ae60;"></i> <strong>Connected Collections:</strong> properties, inquiries, contacts, subscribers
+                    </div>
+                </div>
+            </div>
+
+            <div id="collectionView" style="display: none;">
+                <div class="data-card">
+                    <div class="table-header">
+                        <h3 id="collectionTitle">Properties</h3>
+                        <div style="display: flex; gap: 10px;">
+                            <input type="text" id="tableSearch" class="search-input" placeholder="🔍 Search any field...">
+                            <button class="btn-add" id="addNewBtn"><i class="fas fa-plus"></i> Add Record</button>
+                            <button class="btn-add" style="background:#475569;" id="refreshTableBtn"><i class="fas fa-sync-alt"></i> Sync</button>
+                        </div>
+                    </div>
+                    <div class="table-wrapper">
+                        <div id="dynamicTable">Loading records...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="recordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" style="float:right; font-size:28px; cursor:pointer;" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle" style="margin-bottom: 1rem;">Add Record</h2>
+            <form id="recordForm">
+                <div id="dynamicFormFields"></div>
+                <input type="hidden" id="recordId">
+                <button type="submit" class="btn-add" style="width:100%; margin-top:1rem;">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyASxBb3NOIqhaYv8ROGYJ6SdqrlT_cXBo",
+            authDomain: "realestate-lead.firebaseapp.com",
+            projectId: "realestate-lead",
+            storageBucket: "realestate-lead.firebasestorage.app",
+            messagingSenderId: "416851177138",
+            appId: "1:416851177130:web:d3737cff3496224b5d2ad3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // AUTHENTICATION CREDENTIALS (Hardcoded for single admin)
+        const ADMIN_USERNAME = "ADMIN111";
+        const ADMIN_PASSWORD = "maa123";
+
+        let currentCollection = 'dashboard';
+        let allDocs = [];
+
+        // Session Management
+        function checkAuth() {
+            const isLoggedIn = sessionStorage.getItem('adminAuthenticated');
+            if (isLoggedIn === 'true') {
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('adminDashboard').style.display = 'block';
+                loadDashboardStats();
+            } else {
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('adminDashboard').style.display = 'none';
+            }
+        }
+
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.style.backgroundColor = isError ? '#dc2626' : '#0f172a';
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        }
+
+        // LOGIN HANDLER
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                showToast('✅ Access granted. Welcome Administrator!');
+                checkAuth();
+                document.getElementById('loginError').style.display = 'none';
+            } else {
+                document.getElementById('loginError').style.display = 'block';
+                setTimeout(() => {
+                    document.getElementById('loginError').style.display = 'none';
+                }, 3000);
+            }
+        });
+
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            checkAuth();
+            showToast('🔒 Logged out successfully');
+        }
+
+        // ============ FIREBASE CRUD OPERATIONS ============
+        async function loadDashboardStats() {
+            const collections = ['properties', 'inquiries', 'contacts', 'subscribers'];
+            const stats = {};
+            for (const col of collections) {
+                const snap = await db.collection(col).get();
+                stats[col] = snap.size;
+            }
+            document.getElementById('statsGrid').innerHTML = `
+                <div class="stat-card"><div><h4 style="font-size:0.75rem;">🏠 Properties</h4><div class="stat-number">${stats.properties || 0}</div></div><i class="fas fa-building" style="font-size:2rem; color:#c2a15b;"></i></div>
+                <div class="stat-card"><div><h4 style="font-size:0.75rem;">📋 Inquiries</h4><div class="stat-number">${stats.inquiries || 0}</div></div><i class="fas fa-envelope" style="font-size:2rem; color:#c2a15b;"></i></div>
+                <div class="stat-card"><div><h4 style="font-size:0.75rem;">📞 Contacts</h4><div class="stat-number">${stats.contacts || 0}</div></div><i class="fas fa-phone" style="font-size:2rem; color:#c2a15b;"></i></div>
+                <div class="stat-card"><div><h4 style="font-size:0.75rem;">👥 Subscribers</h4><div class="stat-number">${stats.subscribers || 0}</div></div><i class="fas fa-users" style="font-size:2rem; color:#c2a15b;"></i></div>
+            `;
+        }
+
+        async function fetchCollectionData(collectionName) {
+            const snapshot = await db.collection(collectionName).orderBy('timestamp', 'desc').get();
+            let docs = [];
+            snapshot.forEach(doc => {
+                let data = doc.data();
+                if (data.timestamp) {
+                    if (typeof data.timestamp === 'string') data.timestamp_formatted = new Date(data.timestamp).toLocaleString();
+                    else if (data.timestamp.toDate) data.timestamp_formatted = data.timestamp.toDate().toLocaleString();
+                    else data.timestamp_formatted = '—';
+                } else data.timestamp_formatted = '—';
+                docs.push({ id: doc.id, ...data });
+            });
+            return docs;
+        }
+
+        function getSchemaFields(collection) {
+            if (collection === 'properties') return ['title', 'price', 'location', 'type', 'bedrooms', 'bathrooms', 'area', 'status', 'imageUrl'];
+            if (collection === 'inquiries') return ['name', 'email', 'phone', 'budget', 'requirements', 'status'];
+            if (collection === 'contacts') return ['name', 'email', 'phone', 'message', 'status'];
+            if (collection === 'subscribers') return ['email'];
+            return [];
+        }
+
+        function getFieldLabel(field) {
+            const labels = { title:'Title', price:'Price (₹)', location:'Location', type:'Type', bedrooms:'Beds', bathrooms:'Baths', area:'Sqft', status:'Status', imageUrl:'Image URL', name:'Name', email:'Email', phone:'Phone', budget:'Budget', requirements:'Requirements', message:'Message' };
+            return labels[field] || field;
+        }
+
+        function renderTable(collectionName, docs, searchTerm = '') {
+            const filtered = docs.filter(doc => {
+                if (!searchTerm) return true;
+                return JSON.stringify(doc).toLowerCase().includes(searchTerm.toLowerCase());
+            });
+            if (filtered.length === 0) {
+                document.getElementById('dynamicTable').innerHTML = '<div style="padding:2rem; text-align:center;">✨ No records found.</div>';
+                return;
+            }
+            const fields = getSchemaFields(collectionName);
+            let html = `<table><thead><tr><th>ID</th>${fields.map(f => `<th>${getFieldLabel(f)}</th>`).join('')}<th>Actions</th></tr></thead><tbody>`;
+            filtered.forEach(doc => {
+                let row = `<td style="font-family:monospace; font-size:11px;">${doc.id.substring(0,8)}...${doc.id.slice(-4)}</td>`;
+                for (let field of fields) {
+                    let value = doc[field];
+                    if (field === 'status') {
+                        let statusClass = 'status-new';
+                        if (value === 'contacted') statusClass = 'status-contacted';
+                        else if (value === 'converted') statusClass = 'status-converted';
+                        value = `<span class="status-badge ${statusClass}">${value || 'new'}</span>`;
+                    } else if (field === 'price' && typeof value === 'number') {
+                        value = `₹ ${value.toLocaleString('en-IN')}`;
+                    } else if (field === 'timestamp' && doc.timestamp_formatted) {
+                        value = doc.timestamp_formatted;
+                    } else if (!value) value = '—';
+                    if (typeof value === 'string' && value.length > 35) value = value.substring(0, 35) + '…';
+                    row += `<td>${value}</td>`;
+                }
+                row += `<td class="action-icons">
+                            <i class="fas fa-edit" onclick="editRecord('${collectionName}', '${doc.id}')"></i>
+                            <i class="fas fa-trash-alt" onclick="deleteRecord('${collectionName}', '${doc.id}')"></i>
+                        </td>`;
+                html += `<tr>${row}</tr>`;
+            });
+            html += `</tbody></table>`;
+            document.getElementById('dynamicTable').innerHTML = html;
+        }
+
+        async function loadCollectionUI(collectionName) {
+            currentCollection = collectionName;
+            document.getElementById('dashboardView').style.display = 'none';
+            document.getElementById('collectionView').style.display = 'block';
+            document.getElementById('collectionTitle').innerHTML = `<i class="fas fa-table"></i> ${collectionName.toUpperCase()} Collection`;
+            document.getElementById('currentPageTitle').innerText = `Manage: ${collectionName}`;
+            const docs = await fetchCollectionData(collectionName);
+            allDocs = docs;
+            renderTable(collectionName, docs, document.getElementById('tableSearch')?.value || '');
+        }
+
+        window.switchCollection = (col) => {
+            if (col === 'dashboard') {
+                document.getElementById('dashboardView').style.display = 'block';
+                document.getElementById('collectionView').style.display = 'none';
+                document.getElementById('currentPageTitle').innerText = 'Secure Dashboard';
+                loadDashboardStats();
+            } else {
+                loadCollectionUI(col);
+            }
+            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+            const activeItem = Array.from(document.querySelectorAll('.sidebar-menu li')).find(li => li.getAttribute('data-collection') === col);
+            if (activeItem) activeItem.classList.add('active');
+        };
+
+        function openModalForCollection(collection, existingData = null) {
+            const fields = getSchemaFields(collection);
+            let html = '';
+            for (let field of fields) {
+                let value = existingData ? (existingData[field] !== undefined ? existingData[field] : '') : '';
+                if (field === 'status') {
+                    let options = '';
+                    if (collection === 'properties') options = `<option value="available">available</option><option value="booked">booked</option><option value="sold">sold</option>`;
+                    else options = `<option value="new">new</option><option value="contacted">contacted</option><option value="converted">converted</option>`;
+                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><select id="field_${field}">${options}</select></div>`;
+                    setTimeout(() => { const sel = document.getElementById(`field_${field}`); if(sel && value) sel.value = value; }, 50);
+                } else if (field === 'price' || field === 'bedrooms' || field === 'bathrooms' || field === 'area') {
+                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><input type="number" id="field_${field}" value="${value || 0}"></div>`;
+                } else if (field === 'message' || field === 'requirements') {
+                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><textarea id="field_${field}" rows="2">${value || ''}</textarea></div>`;
+                } else {
+                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><input type="text" id="field_${field}" value="${value || ''}"></div>`;
+                }
+            }
+            document.getElementById('dynamicFormFields').innerHTML = html;
+            document.getElementById('modalTitle').innerText = existingData ? `Edit ${collection} record` : `Add New ${collection}`;
+            document.getElementById('recordModal').style.display = 'block';
+        }
+
+        window.editRecord = async (collection, docId) => {
+            const docSnap = await db.collection(collection).doc(docId).get();
+            openModalForCollection(collection, { id: docId, ...docSnap.data() });
+            document.getElementById('recordId').value = docId;
+        };
+
+        window.deleteRecord = async (collection, docId) => {
+            if (confirm('⚠️ Permanently delete this record? This action cannot be undone.')) {
+                await db.collection(collection).doc(docId).delete();
+                showToast(`🗑️ Deleted from ${collection}`);
+                if (currentCollection === collection) await loadCollectionUI(collection);
+                else loadDashboardStats();
+            }
+        };
+
+        function closeModal() {
+            document.getElementById('recordModal').style.display = 'none';
+            document.getElementById('recordForm').reset();
+            document.getElementById('recordId').value = '';
+        }
+
+        document.getElementById('recordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const collection = currentCollection;
+            const docId = document.getElementById('recordId').value;
+            const fields = getSchemaFields(collection);
+            let updateData = { timestamp: new Date().toISOString() };
+            for (let field of fields) {
+                const el = document.getElementById(`field_${field}`);
+                if (el) {
+                    let val = el.value;
+                    if (field === 'price' || field === 'bedrooms' || field === 'bathrooms' || field === 'area') val = parseFloat(val) || 0;
+                    updateData[field] = val;
+                }
+            }
+            try {
+                if (docId) {
+                    await db.collection(collection).doc(docId).update(updateData);
+                    showToast(`✅ ${collection} record updated`);
+                } else {
+                    await db.collection(collection).add(updateData);
+                    showToast(`✅ New record added to ${collection}`);
+                }
+                closeModal();
+                if (currentCollection !== 'dashboard') await loadCollectionUI(currentCollection);
+                else loadDashboardStats();
+            } catch(err) { showToast(`Error: ${err.message}`, true); }
+        });
+
+        document.getElementById('addNewBtn')?.addEventListener('click', () => {
+            if (currentCollection && currentCollection !== 'dashboard') openModalForCollection(currentCollection, null);
+        });
+        document.getElementById('refreshTableBtn')?.addEventListener('click', async () => {
+            if (currentCollection && currentCollection !== 'dashboard') await loadCollectionUI(currentCollection);
+        });
+        document.getElementById('tableSearch')?.addEventListener('input', (e) => {
+            if (allDocs && currentCollection !== 'dashboard') renderTable(currentCollection, allDocs, e.target.value);
+        });
+        window.closeModal = closeModal;
+
+        // Initialize auth check
+        checkAuth();
+    </script>
+</body>
+</html>

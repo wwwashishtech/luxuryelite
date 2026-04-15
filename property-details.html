@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Properties | Elite Estate</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f9fa;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #e74c3c, #f39c12);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 120px 0 60px;
+            text-align: center;
+            color: white;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .filters-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .filter-grid select, .filter-grid input {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 0.9rem;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .property-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #e74c3c;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .property-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-price {
+            font-size: 1.5rem;
+            color: #e74c3c;
+            font-weight: bold;
+            margin: 0.5rem 0;
+        }
+
+        .property-location {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .property-features {
+            display: flex;
+            gap: 1rem;
+            margin: 1rem 0;
+            color: #666;
+        }
+
+        .btn-inquiry {
+            width: 100%;
+            padding: 0.8rem;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 3rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .pagination button.active {
+            background: #e74c3c;
+            color: white;
+            border-color: #e74c3c;
+        }
+
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .property-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-crown"></i> Elite Estate
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="properties.html">Properties</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="admin.html" style="background:#e74c3c; color:white; padding:0.5rem 1rem; border-radius:25px;">Admin</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>Explore Our Properties</h1>
+        <p>Find your dream home from our curated collection</p>
+    </div>
+
+    <div class="container">
+        <div class="filters-section">
+            <h3><i class="fas fa-filter"></i> Filter Properties</h3>
+            <div class="filter-grid">
+                <select id="filterType">
+                    <option value="">Property Type</option>
+                    <option value="Apartment">Apartment</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Penthouse">Penthouse</option>
+                    <option value="Land">Land</option>
+                </select>
+                <select id="filterBedrooms">
+                    <option value="">Bedrooms</option>
+                    <option value="1">1 BHK</option>
+                    <option value="2">2 BHK</option>
+                    <option value="3">3 BHK</option>
+                    <option value="4">4+ BHK</option>
+                </select>
+                <select id="filterPrice">
+                    <option value="">Price Range</option>
+                    <option value="0-100000">Under $100k</option>
+                    <option value="100000-300000">$100k - $300k</option>
+                    <option value="300000-500000">$300k - $500k</option>
+                    <option value="500000-1000000">$500k - $1M</option>
+                    <option value="1000000+">$1M+</option>
+                </select>
+                <input type="text" id="searchLocation" placeholder="Search by location...">
+                <button class="btn-inquiry" onclick="applyFilters()" style="background:#e74c3c;">Apply Filters</button>
+                <button class="btn-inquiry" onclick="resetFilters()" style="background:#95a5a6;">Reset</button>
+            </div>
+        </div>
+
+        <div class="property-grid" id="propertyGrid">
+            <div style="text-align:center; padding:2rem;">Loading properties...</div>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 Elite Estate. All rights reserved.</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyASxBb3NOIqhaYv8ROGYJ6SdqrlT_cXBo",
+            authDomain: "realestate-lead.firebaseapp.com",
+            projectId: "realestate-lead",
+            storageBucket: "realestate-lead.firebasestorage.app",
+            messagingSenderId: "416851177138",
+            appId: "1:416851177130:web:d3737cff3496224b5d2ad3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allProperties = [];
+        let currentPage = 1;
+        const itemsPerPage = 6;
+
+        async function loadProperties() {
+            const snapshot = await db.collection('properties').get();
+            allProperties = [];
+            snapshot.forEach(doc => {
+                allProperties.push({ id: doc.id, ...doc.data() });
+            });
+            displayProperties();
+        }
+
+        function displayProperties() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const paginatedProperties = allProperties.slice(start, end);
+            
+            const grid = document.getElementById('propertyGrid');
+            if (paginatedProperties.length === 0) {
+                grid.innerHTML = '<div style="text-align:center; padding:2rem;">No properties found</div>';
+                return;
+            }
+
+            grid.innerHTML = paginatedProperties.map(property => `
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="${property.imageUrl || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400'}" alt="${property.title}">
+                        <div class="property-badge">${property.status || 'Available'}</div>
+                    </div>
+                    <div class="property-info">
+                        <h3 class="property-title">${property.title}</h3>
+                        <div class="property-price">$${property.price?.toLocaleString()}</div>
+                        <div class="property-location"><i class="fas fa-map-marker-alt"></i> ${property.location}</div>
+                        <div class="property-features">
+                            <span><i class="fas fa-bed"></i> ${property.bedrooms} Beds</span>
+                            <span><i class="fas fa-bath"></i> ${property.bathrooms} Baths</span>
+                            <span><i class="fas fa-vector-square"></i> ${property.area} sqft</span>
+                        </div>
+                        <button class="btn-inquiry" onclick="window.location.href='index.html?property=${property.id}'">
+                            <i class="fas fa-envelope"></i> Inquire Now
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+            updatePagination();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(allProperties.length / itemsPerPage);
+            const paginationDiv = document.getElementById('pagination');
+            
+            let buttons = '';
+            for (let i = 1; i <= totalPages; i++) {
+                buttons += `<button class="${i === currentPage ? 'active' : ''}" onclick="goToPage(${i})">${i}</button>`;
+            }
+            paginationDiv.innerHTML = buttons;
+        }
+
+        window.goToPage = function(page) {
+            currentPage = page;
+            displayProperties();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.applyFilters = function() {
+            const type = document.getElementById('filterType').value;
+            const bedrooms = document.getElementById('filterBedrooms').value;
+            const priceRange = document.getElementById('filterPrice').value;
+            const location = document.getElementById('searchLocation').value.toLowerCase();
+            
+            let filtered = [...allProperties];
+            
+            if (type) filtered = filtered.filter(p => p.type === type);
+            if (bedrooms) filtered = filtered.filter(p => p.bedrooms >= parseInt(bedrooms));
+            if (location) filtered = filtered.filter(p => p.location?.toLowerCase().includes(location));
+            if (priceRange) {
+                const [min, max] = priceRange.split('-');
+                if (max) {
+                    filtered = filtered.filter(p => p.price >= parseInt(min) && p.price <= parseInt(max));
+                } else if (priceRange === '1000000+') {
+                    filtered = filtered.filter(p => p.price >= 1000000);
+                }
+            }
+            
+            allProperties = filtered;
+            currentPage = 1;
+            displayProperties();
+        }
+
+        window.resetFilters = function() {
+            document.getElementById('filterType').value = '';
+            document.getElementById('filterBedrooms').value = '';
+            document.getElementById('filterPrice').value = '';
+            document.getElementById('searchLocation').value = '';
+            loadProperties();
+        }
+
+        loadProperties();
+    </script>
+</body>
+</html>

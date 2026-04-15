@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="My Dashboard - Track your property inquiries, wishlist, and saved properties. Manage your real estate journey with Luxury Estates Maharashtra.">
+    <title>My Dashboard | Luxury Estates Maharashtra</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fc;
+            color: #1a2634;
+        }
+
+        /* Premium Navbar */
+        .navbar {
+            background: rgba(255,255,255,0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(194,161,91,0.2);
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c2a15b, #9a7b3e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo i {
+            color: #c2a15b;
+            margin-right: 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c3e50;
+            margin-left: 1.8rem;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #c2a15b;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1300px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Dashboard Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 2.5rem;
+            border-radius: 28px;
+            color: white;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dashboard-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(194,161,91,0.15), transparent);
+            border-radius: 50%;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2rem;
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            opacity: 0.85;
+            font-size: 0.95rem;
+        }
+
+        .user-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+            border: 1px solid #edf2f7;
+            transition: transform 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .stat-left h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5b6e8c;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stat-icon i {
+            font-size: 2.5rem;
+            color: #c2a15b;
+            opacity: 0.7;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin: 2rem 0 1.2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-header h2 i {
+            color: #c2a15b;
+        }
+
+        /* Inquiries List */
+        .inquiries-container {
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+            border: 1px solid #edf2f7;
+        }
+
+        .inquiry-item {
+            padding: 1.3rem 1.8rem;
+            border-bottom: 1px solid #f0f2f5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            transition: background 0.2s;
+        }
+
+        .inquiry-item:hover {
+            background: #fafcff;
+        }
+
+        .inquiry-details h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .inquiry-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            font-size: 0.8rem;
+            color: #5b6e8c;
+            margin-top: 0.3rem;
+        }
+
+        .inquiry-meta i {
+            width: 18px;
+            color: #c2a15b;
+        }
+
+        .inquiry-status {
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-new { background: #e0f2fe; color: #0369a1; }
+        .status-contacted { background: #fff7ed; color: #c2410c; }
+        .status-converted { background: #dcfce7; color: #15803d; }
+
+        /* Wishlist Grid */
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .wishlist-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+            border: 1px solid #edf2f7;
+        }
+
+        .wishlist-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .card-img {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+
+        .wishlist-card:hover .card-img img {
+            transform: scale(1.05);
+        }
+
+        .price-tag {
+            position: absolute;
+            bottom: 12px;
+            left: 12px;
+            background: #c2a15b;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .card-info {
+            padding: 1.2rem;
+        }
+
+        .card-info h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+        }
+
+        .card-location {
+            font-size: 0.8rem;
+            color: #5b6e8c;
+            margin-bottom: 0.5rem;
+        }
+
+        .card-features {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.7rem;
+            color: #5b6e8c;
+            margin: 0.8rem 0;
+        }
+
+        .remove-btn {
+            width: 100%;
+            padding: 0.7rem;
+            background: #fef2f2;
+            border: 1px solid #fee2e2;
+            color: #dc2626;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+
+        .remove-btn:hover {
+            background: #dc2626;
+            color: white;
+            border-color: #dc2626;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 24px;
+            color: #5b6e8c;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #0f172a;
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            z-index: 9999;
+            display: none;
+            font-size: 0.85rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 1rem; }
+            .inquiry-item { flex-direction: column; align-items: flex-start; }
+            .navbar { flex-direction: column; gap: 1rem; }
+            .nav-links a { margin: 0 0.8rem; }
+            .stat-number { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fas fa-gem"></i> EstateElite
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+            <a href="index.html#properties"><i class="fas fa-building"></i> Properties</a>
+            <a href="#" onclick="logoutUser()"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-user-astronaut"></i> My Dashboard</h1>
+            <p>Track your property journey — inquiries, saved listings, and more</p>
+            <div class="user-badge" id="userEmailDisplay">
+                <i class="fas fa-envelope"></i> Loading profile...
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h4>Total Inquiries</h4>
+                    <div class="stat-number" id="totalInquiries">0</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-paper-plane"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h4>Wishlist</h4>
+                    <div class="stat-number" id="totalWishlist">0</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-heart"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h4>Active Status</h4>
+                    <div class="stat-number" id="activeInquiries">0</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-bell"></i></div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2><i class="fas fa-clock"></i> My Property Inquiries</h2>
+            <span style="font-size: 0.8rem; color:#5b6e8c;"><i class="fas fa-sync-alt"></i> Real-time updates</span>
+        </div>
+        <div class="inquiries-container" id="inquiriesList">
+            <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading your inquiries...</div>
+        </div>
+
+        <div class="section-header">
+            <h2><i class="fas fa-heart"></i> Saved Properties</h2>
+            <span style="font-size: 0.8rem; color:#5b6e8c;"><i class="fas fa-star"></i> Your favorites</span>
+        </div>
+        <div id="wishlistGrid" class="wishlist-grid">
+            <div class="empty-state"><i class="fas fa-heart"></i> Loading wishlist...</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Luxury Estates Maharashtra | Your dream home companion</p>
+    </footer>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyASxBb3NOIqhaYv8ROGYJ6SdqrlT_cXBo",
+            authDomain: "realestate-lead.firebaseapp.com",
+            projectId: "realestate-lead",
+            storageBucket: "realestate-lead.firebasestorage.app",
+            messagingSenderId: "416851177138",
+            appId: "1:416851177130:web:d3737cff3496224b5d2ad3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        // Session & User Management (simple localStorage based for demo)
+        let currentUserEmail = null;
+
+        function initUserSession() {
+            // Check if user is logged in (from localStorage)
+            let userEmail = localStorage.getItem('userEmail');
+            if (!userEmail) {
+                // If not logged in, prompt for email to simulate personalized dashboard
+                userEmail = prompt("🔐 Welcome to your Dashboard!\nPlease enter your email to view your inquiries & wishlist:", "client@example.com");
+                if (userEmail && userEmail.trim() !== "") {
+                    localStorage.setItem('userEmail', userEmail.trim());
+                    currentUserEmail = userEmail.trim();
+                } else {
+                    currentUserEmail = "guest@example.com";
+                    localStorage.setItem('userEmail', currentUserEmail);
+                }
+            } else {
+                currentUserEmail = userEmail;
+            }
+            document.getElementById('userEmailDisplay').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUserEmail}`;
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.style.backgroundColor = isError ? '#dc2626' : '#0f172a';
+            toast.textContent = message;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2800);
+        }
+
+        // Load User Inquiries from Firestore
+        async function loadUserInquiries() {
+            if (!currentUserEmail) return;
+            try {
+                const snapshot = await db.collection('inquiries')
+                    .where('email', '==', currentUserEmail)
+                    .orderBy('timestamp', 'desc')
+                    .get();
+                
+                const inquiries = [];
+                snapshot.forEach(doc => {
+                    inquiries.push({ id: doc.id, ...doc.data() });
+                });
+                
+                document.getElementById('totalInquiries').textContent = inquiries.length;
+                const activeCount = inquiries.filter(i => i.status !== 'converted').length;
+                document.getElementById('activeInquiries').textContent = activeCount;
+                
+                const inquiriesContainer = document.getElementById('inquiriesList');
+                if (inquiries.length === 0) {
+                    inquiriesContainer.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i> No inquiries yet. <a href="index.html#properties" style="color:#c2a15b;">Browse properties</a> to get started!</div>`;
+                    return;
+                }
+                
+                inquiriesContainer.innerHTML = inquiries.map(inquiry => {
+                    const statusClass = `status-${inquiry.status || 'new'}`;
+                    const statusText = inquiry.status || 'new';
+                    const propertyRef = inquiry.propertyTitle || 'Property Enquiry';
+                    const budgetText = inquiry.budget ? `💰 ${inquiry.budget}` : 'Budget: N/A';
+                    const dateStr = inquiry.timestamp ? new Date(inquiry.timestamp).toLocaleDateString('en-IN', { day:'numeric', month:'short', year:'numeric' }) : 'recent';
+                    
+                    return `
+                        <div class="inquiry-item">
+                            <div class="inquiry-details">
+                                <h4><i class="fas fa-home"></i> ${escapeHtml(propertyRef)}</h4>
+                                <div class="inquiry-meta">
+                                    <span><i class="fas fa-calendar"></i> ${dateStr}</span>
+                                    <span><i class="fas fa-rupee-sign"></i> ${budgetText}</span>
+                                    ${inquiry.requirements ? `<span><i class="fas fa-comment"></i> ${escapeHtml(inquiry.requirements.substring(0, 60))}${inquiry.requirements.length > 60 ? '…' : ''}</span>` : ''}
+                                </div>
+                            </div>
+                            <div>
+                                <span class="inquiry-status ${statusClass}">${statusText.toUpperCase()}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                console.error("Error loading inquiries:", error);
+                document.getElementById('inquiriesList').innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Unable to load inquiries. Try again later.</div>`;
+            }
+        }
+
+        // Wishlist: load from localStorage + fetch property details
+        async function loadWishlist() {
+            const wishlistIds = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            document.getElementById('totalWishlist').textContent = wishlistIds.length;
+            
+            if (wishlistIds.length === 0) {
+                document.getElementById('wishlistGrid').innerHTML = `<div class="empty-state"><i class="fas fa-heart-broken"></i> No saved properties. <a href="index.html#properties" style="color:#c2a15b;">Explore & save your favorites ❤️</a></div>`;
+                return;
+            }
+            
+            const properties = [];
+            for (const id of wishlistIds) {
+                try {
+                    const doc = await db.collection('properties').doc(id).get();
+                    if (doc.exists) {
+                        properties.push({ id: doc.id, ...doc.data() });
+                    }
+                } catch(e) { console.warn(e); }
+            }
+            
+            if (properties.length === 0) {
+                document.getElementById('wishlistGrid').innerHTML = `<div class="empty-state"><i class="fas fa-heart"></i> Saved properties not found (might be removed from listings).</div>`;
+                return;
+            }
+            
+            document.getElementById('wishlistGrid').innerHTML = properties.map(property => `
+                <div class="wishlist-card">
+                    <div class="card-img">
+                        <img src="${property.imageUrl || 'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400'}" alt="${escapeHtml(property.title)}">
+                        <div class="price-tag">₹ ${(property.price || 0).toLocaleString('en-IN')}</div>
+                    </div>
+                    <div class="card-info">
+                        <h3>${escapeHtml(property.title)}</h3>
+                        <div class="card-location"><i class="fas fa-map-marker-alt"></i> ${escapeHtml(property.location)}</div>
+                        <div class="card-features">
+                            ${property.bedrooms ? `<span><i class="fas fa-bed"></i> ${property.bedrooms} BHK</span>` : ''}
+                            ${property.bathrooms ? `<span><i class="fas fa-bath"></i> ${property.bathrooms}</span>` : ''}
+                            ${property.area ? `<span><i class="fas fa-vector-square"></i> ${property.area} sqft</span>` : ''}
+                        </div>
+                        <button class="remove-btn" onclick="removeFromWishlist('${property.id}')"><i class="fas fa-trash-alt"></i> Remove from Wishlist</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.removeFromWishlist = function(propertyId) {
+            let wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+            const newWishlist = wishlist.filter(id => id !== propertyId);
+            localStorage.setItem('wishlist', JSON.stringify(newWishlist));
+            loadWishlist();
+            showToast(`✓ Removed from your wishlist`, false);
+            // Update stats count
+            document.getElementById('totalWishlist').textContent = newWishlist.length;
+        };
+
+        function logoutUser() {
+            localStorage.removeItem('userEmail');
+            showToast("🔒 Logged out. Redirecting to home...");
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1200);
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // Real-time listener for inquiries (optional)
+        function setupRealtimeListener() {
+            if (!currentUserEmail) return;
+            db.collection('inquiries')
+                .where('email', '==', currentUserEmail)
+                .onSnapshot(() => {
+                    loadUserInquiries();
+                });
+        }
+
+        // Sync wishlist when localStorage changes (across tabs)
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'wishlist') {
+                loadWishlist();
+            }
+        });
+
+        // Initialize dashboard
+        initUserSession();
+        loadUserInquiries();
+        loadWishlist();
+        setupRealtimeListener();
+    </script>
+</body>
+</html>

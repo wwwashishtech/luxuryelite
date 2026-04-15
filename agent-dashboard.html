@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Agent Dashboard - Luxury Estates Maharashtra. Manage leads, track conversions, call & WhatsApp clients, and analyze performance metrics.">
+    <title>Agent Concierge | Luxury Estates Maharashtra</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f8;
+            color: #1a2634;
+        }
+
+        /* premium header */
+        .header {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 1.2rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-area h2 {
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .logo-area i {
+            color: #c2a15b;
+            margin-right: 8px;
+        }
+
+        .nav-links a {
+            color: #e2e8f0;
+            text-decoration: none;
+            margin-left: 1.8rem;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: #c2a15b;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        /* kpi cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 24px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid #c2a15b;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-left h3 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5b6e8c;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-left .number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stat-icon i {
+            font-size: 2.8rem;
+            color: #c2a15b;
+            opacity: 0.7;
+        }
+
+        /* filter bar */
+        .filter-bar {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            border-radius: 40px;
+            padding: 0.3rem 1rem;
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-box i {
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            border: none;
+            background: transparent;
+            padding: 0.7rem;
+            width: 100%;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .filter-group select {
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            border: 1px solid #e2e8f0;
+            background: white;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .refresh-btn {
+            background: #c2a15b;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 40px;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        /* lead cards */
+        .leads-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .lead-card {
+            background: white;
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+            transition: all 0.2s;
+            border: 1px solid #edf2f7;
+        }
+
+        .lead-card:hover {
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .lead-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+            color: #0f172a;
+        }
+
+        .lead-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-top: 0.3rem;
+            font-size: 0.85rem;
+            color: #475569;
+        }
+
+        .lead-details i {
+            width: 18px;
+            color: #c2a15b;
+        }
+
+        .property-badge-sm {
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .lead-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .status-badge {
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-new { background: #e0f2fe; color: #0369a1; }
+        .status-contacted { background: #fff7ed; color: #c2410c; }
+        .status-converted { background: #dcfce7; color: #15803d; }
+
+        select.status-select {
+            padding: 0.4rem 0.8rem;
+            border-radius: 40px;
+            border: 1px solid #cbd5e1;
+            background: white;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+        }
+
+        .btn-call {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+        }
+
+        .btn-email {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 24px;
+            color: #64748b;
+        }
+
+        /* realtime pulse */
+        .live-badge {
+            background: #10b98120;
+            border-radius: 40px;
+            padding: 0.2rem 0.8rem;
+            font-size: 0.7rem;
+            color: #10b981;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: #5b6e8c;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 800px) {
+            .lead-card {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .lead-actions {
+                justify-content: flex-start;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo-area">
+            <h2><i class="fas fa-gem"></i> Luxury Estates | Agent Concierge</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html"><i class="fas fa-globe"></i> Live Site</a>
+            <a href="admin.html"><i class="fas fa-lock"></i> Admin Vault</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- KPI Section -->
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h3>Total Inquiries</h3>
+                    <div class="number" id="totalLeads">0</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-users"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h3>Contacted</h3>
+                    <div class="number" id="contactedLeads">0</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-phone-alt"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h3>Converted</h3>
+                    <div class="number" id="convertedLeads">0</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-left">
+                    <h3>Conversion Rate</h3>
+                    <div class="number" id="conversionRate">0%</div>
+                </div>
+                <div class="stat-icon"><i class="fas fa-chart-line"></i></div>
+            </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="filter-bar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search by name, phone, email, property...">
+            </div>
+            <div class="filter-group">
+                <select id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="new">🆕 New</option>
+                    <option value="contacted">📞 Contacted</option>
+                    <option value="converted">✅ Converted</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <select id="sortBy">
+                    <option value="date_desc">Latest First</option>
+                    <option value="date_asc">Oldest First</option>
+                    <option value="name_asc">Name A-Z</option>
+                </select>
+            </div>
+            <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> Sync</button>
+            <span class="live-badge"><i class="fas fa-circle" style="font-size: 8px;"></i> Live updates</span>
+        </div>
+
+        <div class="leads-header">
+            <h3><i class="fas fa-tasks"></i> Qualified Leads & Follow-ups</h3>
+            <small id="leadCountInfo">— leads shown</small>
+        </div>
+        <div id="leadsList">
+            <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Loading premium leads...</div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Luxury Estates Maharashtra — Real-time agent dashboard | Leads auto-refresh every 20 seconds</p>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase Config (same as main project)
+        const firebaseConfig = {
+            apiKey: "AIzaSyASxBb3NOIqhaYv8ROGYJ6SdqrlT_cXBo",
+            authDomain: "realestate-lead.firebaseapp.com",
+            projectId: "realestate-lead",
+            storageBucket: "realestate-lead.firebasestorage.app",
+            messagingSenderId: "416851177138",
+            appId: "1:416851177130:web:d3737cff3496224b5d2ad3"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let allLeads = [];
+
+        // Helper: show toast-like console but in UI friendly (optional)
+        function updateLeadCounter(shown) {
+            const infoSpan = document.getElementById('leadCountInfo');
+            if (infoSpan) infoSpan.innerHTML = `📋 ${shown} lead${shown !== 1 ? 's' : ''} displayed`;
+        }
+
+        // Render leads with filters & search
+        async function loadAndRender() {
+            try {
+                // Fetch from inquiries collection (and also from contacts maybe, but we focus on inquiries + property inquiries)
+                const snapshot = await db.collection('inquiries').orderBy('timestamp', 'desc').get();
+                const leads = [];
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    leads.push({
+                        id: doc.id,
+                        name: data.name || 'Anonymous',
+                        phone: data.phone || '—',
+                        email: data.email || '—',
+                        budget: data.budget || 'Not specified',
+                        requirements: data.requirements || '—',
+                        propertyId: data.propertyId || null,
+                        propertyTitle: data.propertyTitle || 'General Inquiry',
+                        status: data.status || 'new',
+                        timestamp: data.timestamp || new Date().toISOString(),
+                        createdAt: data.timestamp ? new Date(data.timestamp) : new Date()
+                    });
+                });
+
+                // Also fetch contacts as general leads (website contact form)
+                const contactsSnap = await db.collection('contacts').get();
+                contactsSnap.forEach(doc => {
+                    const c = doc.data();
+                    // avoid duplicates if same email/phone? but we add as separate lead type
+                    leads.push({
+                        id: 'contact_'+doc.id,
+                        name: c.name || 'Website Visitor',
+                        phone: c.phone || '—',
+                        email: c.email || '—',
+                        budget: 'N/A',
+                        requirements: c.message ? c.message.substring(0,80) : 'Contact message',
+                        propertyTitle: 'Contact Form Enquiry',
+                        status: c.status || 'new',
+                        timestamp: c.timestamp || new Date().toISOString(),
+                        createdAt: c.timestamp ? new Date(c.timestamp) : new Date(),
+                        isContact: true
+                    });
+                });
+
+                // Sort globally by timestamp desc for default
+                leads.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+                allLeads = leads;
+                applyFiltersAndRender();
+            } catch (error) {
+                console.error("Firestore error", error);
+                document.getElementById('leadsList').innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i> Unable to fetch leads. Check network or permissions.</div>';
+            }
+        }
+
+        function applyFiltersAndRender() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value;
+            const sortValue = document.getElementById('sortBy').value;
+
+            let filtered = [...allLeads];
+
+            // Search filter
+            if (searchTerm) {
+                filtered = filtered.filter(lead => 
+                    lead.name?.toLowerCase().includes(searchTerm) ||
+                    lead.phone?.includes(searchTerm) ||
+                    lead.email?.toLowerCase().includes(searchTerm) ||
+                    lead.propertyTitle?.toLowerCase().includes(searchTerm) ||
+                    (lead.requirements && lead.requirements.toLowerCase().includes(searchTerm))
+                );
+            }
+
+            // Status filter
+            if (statusFilter !== 'all') {
+                filtered = filtered.filter(lead => lead.status === statusFilter);
+            }
+
+            // Sorting
+            if (sortValue === 'date_asc') {
+                filtered.sort((a,b) => new Date(a.timestamp) - new Date(b.timestamp));
+            } else if (sortValue === 'date_desc') {
+                filtered.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+            } else if (sortValue === 'name_asc') {
+                filtered.sort((a,b) => (a.name || '').localeCompare(b.name || ''));
+            }
+
+            // Update stats cards
+            const total = allLeads.length;
+            const contacted = allLeads.filter(l => l.status === 'contacted').length;
+            const converted = allLeads.filter(l => l.status === 'converted').length;
+            const conversionRate = total > 0 ? ((converted / total) * 100).toFixed(1) : 0;
+            
+            document.getElementById('totalLeads').innerText = total;
+            document.getElementById('contactedLeads').innerText = contacted;
+            document.getElementById('convertedLeads').innerText = converted;
+            document.getElementById('conversionRate').innerHTML = `${conversionRate}%`;
+
+            // Render cards
+            const leadsContainer = document.getElementById('leadsList');
+            if (filtered.length === 0) {
+                leadsContainer.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i> No leads match current filters. Try adjusting search or status.</div>';
+                updateLeadCounter(0);
+                return;
+            }
+
+            updateLeadCounter(filtered.length);
+
+            leadsContainer.innerHTML = filtered.map(lead => {
+                const statusClass = `status-${lead.status}`;
+                const formattedDate = lead.createdAt ? lead.createdAt.toLocaleString('en-IN', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }) : 'recent';
+                const propertyLabel = lead.propertyTitle && lead.propertyTitle !== 'General Inquiry' ? lead.propertyTitle : (lead.isContact ? '📞 Website Message' : '🏢 Property Enquiry');
+                
+                return `
+                    <div class="lead-card" data-lead-id="${lead.id}">
+                        <div class="lead-info" style="flex:2">
+                            <h4><i class="fas fa-user-circle"></i> ${escapeHtml(lead.name)} 
+                                ${lead.budget !== 'N/A' ? `<span class="property-badge-sm">💰 ${lead.budget}</span>` : ''}
+                            </h4>
+                            <div class="lead-details">
+                                <span><i class="fas fa-phone-alt"></i> ${lead.phone}</span>
+                                <span><i class="fas fa-envelope"></i> ${lead.email}</span>
+                                <span><i class="fas fa-tag"></i> ${escapeHtml(propertyLabel)}</span>
+                                <span><i class="far fa-calendar-alt"></i> ${formattedDate}</span>
+                            </div>
+                            ${lead.requirements && lead.requirements !== '—' ? `<div class="lead-details" style="margin-top: 6px;"><i class="fas fa-comment-dots"></i> <span style="font-size:0.8rem;">${escapeHtml(lead.requirements.substring(0, 100))}${lead.requirements.length > 100 ? '…' : ''}</span></div>` : ''}
+                        </div>
+                        <div class="lead-actions">
+                            <span class="status-badge ${statusClass}">${lead.status === 'new' ? '🆕 New' : lead.status === 'contacted' ? '📞 Contacted' : '✅ Converted'}</span>
+                            <select class="status-select" onchange="updateLeadStatus('${lead.id}', this.value, ${!!lead.isContact})">
+                                <option value="new" ${lead.status === 'new' ? 'selected' : ''}>🆕 New</option>
+                                <option value="contacted" ${lead.status === 'contacted' ? 'selected' : ''}>📞 Contacted</option>
+                                <option value="converted" ${lead.status === 'converted' ? 'selected' : ''}>✅ Converted</option>
+                            </select>
+                            <button class="action-btn btn-call" onclick="initiateCall('${lead.phone}')"><i class="fas fa-phone"></i> Call</button>
+                            <button class="action-btn btn-whatsapp" onclick="initiateWhatsApp('${lead.phone}', '${escapeHtml(lead.name)}')"><i class="fab fa-whatsapp"></i> WhatsApp</button>
+                            <button class="action-btn btn-email" onclick="sendEmailLead('${lead.email}', '${escapeHtml(lead.name)}')"><i class="fas fa-paper-plane"></i> Email</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+
+        // Update status in Firestore (handles both inquiries and contacts collections)
+        window.updateLeadStatus = async function(id, newStatus, isContact = false) {
+            try {
+                const collectionName = isContact ? 'contacts' : 'inquiries';
+                // id might have prefix 'contact_' for contacts we generated in memory, but actual doc id is without prefix
+                let actualDocId = id;
+                let actualCollection = 'inquiries';
+                if (id.startsWith('contact_')) {
+                    actualDocId = id.replace('contact_', '');
+                    actualCollection = 'contacts';
+                } else {
+                    actualCollection = collectionName;
+                }
+                
+                await db.collection(actualCollection).doc(actualDocId).update({ status: newStatus });
+                // refresh leads to reflect update
+                await loadAndRender();
+                showFloatingMessage(`Status updated to ${newStatus}`, '#27ae60');
+            } catch (err) {
+                console.error(err);
+                showFloatingMessage('Error updating status', '#e74c3c');
+            }
+        };
+
+        window.initiateCall = function(phone) {
+            if (phone && phone !== '—') {
+                window.location.href = `tel:${phone}`;
+            } else {
+                showFloatingMessage('Phone number not available', '#e67e22');
+            }
+        };
+
+        window.initiateWhatsApp = function(phone, name) {
+            if (!phone || phone === '—') {
+                showFloatingMessage('WhatsApp number missing', '#e67e22');
+                return;
+            }
+            // clean phone: remove spaces, +91 etc but keep digits
+            let cleanPhone = phone.replace(/\s/g, '').replace(/^\+/, '');
+            const message = `Hello ${name}, this is ${getAgentName()} from Luxury Estates Maharashtra. I'm following up on your property inquiry. Let me know a convenient time to discuss premium residential or commercial options. ✨`;
+            window.open(`https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        };
+
+        window.sendEmailLead = function(email, name) {
+            if (!email || email === '—') {
+                showFloatingMessage('Email address missing', '#e67e22');
+                return;
+            }
+            const subject = `Luxury Estates: Exclusive property options for ${name}`;
+            const body = `Dear ${name},\n\nThank you for your interest in Luxury Estates Maharashtra. I'm your dedicated real estate consultant. We have curated premium residential & commercial listings across Mumbai, Pune, Nagpur, Nashik.\n\nWould you like to schedule a call or site visit?\n\nRegards,\n${getAgentName()}\n+91 98765 43210`;
+            window.location.href = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        };
+
+        function getAgentName() {
+            return "Rahul Mehta (Senior Realty Advisor)";
+        }
+
+        function showFloatingMessage(msg, bgColor) {
+            let toast = document.getElementById('dynamicToast');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'dynamicToast';
+                toast.style.position = 'fixed';
+                toast.style.bottom = '30px';
+                toast.style.right = '30px';
+                toast.style.backgroundColor = bgColor;
+                toast.style.color = 'white';
+                toast.style.padding = '12px 24px';
+                toast.style.borderRadius = '50px';
+                toast.style.fontWeight = '500';
+                toast.style.zIndex = '9999';
+                toast.style.boxShadow = '0 5px 15px rgba(0,0,0,0.2)';
+                toast.style.fontSize = '0.9rem';
+                document.body.appendChild(toast);
+            }
+            toast.style.backgroundColor = bgColor;
+            toast.innerHTML = `<i class="fas fa-bell"></i> ${msg}`;
+            toast.style.display = 'block';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 2800);
+        }
+
+        // realtime listeners for both collections (passive updates)
+        function setupRealtimeListeners() {
+            db.collection('inquiries').onSnapshot(() => {
+                loadAndRender();
+            });
+            db.collection('contacts').onSnapshot(() => {
+                loadAndRender();
+            });
+        }
+
+        // event listeners for filters
+        document.getElementById('searchInput').addEventListener('input', () => applyFiltersAndRender());
+        document.getElementById('statusFilter').addEventListener('change', () => applyFiltersAndRender());
+        document.getElementById('sortBy').addEventListener('change', () => applyFiltersAndRender());
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            loadAndRender();
+            showFloatingMessage('Dashboard synced with live database', '#c2a15b');
+        });
+
+        // initial load and realtime
+        loadAndRender();
+        setupRealtimeListeners();
+        // also set interval fallback
+        setInterval(() => loadAndRender(), 20000);
+    </script>
+</body>
+</html>

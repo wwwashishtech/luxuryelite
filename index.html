@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <meta name="description" content="Luxury Estates Maharashtra - Premium commercial & residential properties across Mumbai, Pune, Nagpur, Nashik & all Maharashtra. Office spaces, retail shops, luxury flats, villas at best prices in ₹">
+    <meta name="keywords" content="commercial properties Maharashtra, residential flats Maharashtra, luxury apartments Mumbai, office space Pune, retail shops Nagpur, real estate Maharashtra, buy property India">
+    <meta name="author" content="Luxury Estates Maharashtra">
+    <meta name="robots" content="index, follow">
+    <title>Luxury Estates Maharashtra | Commercial & Residential Properties Across MH</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #fefefe;
+            color: #1a1a2e;
+            scroll-behavior: smooth;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c2a15b;
+            border-radius: 10px;
+        }
+
+        /* Floating Contact Bar */
+        .floating-contact {
+            position: fixed;
+            right: 20px;
+            bottom: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .floating-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            position: relative;
+            text-decoration: none;
+        }
+
+        .floating-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .floating-btn i {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .btn-call {
+            background: #25D366;
+        }
+
+        .btn-whatsapp {
+            background: #128C7E;
+        }
+
+        .btn-email {
+            background: #c2a15b;
+        }
+
+        .btn-call {
+            background: #3498db;
+        }
+
+        .tooltip-text {
+            position: absolute;
+            right: 65px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .floating-btn:hover .tooltip-text {
+            opacity: 1;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(8px);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #c2a15b, #9a7b3e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .logo i {
+            color: #c2a15b;
+            margin-right: 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #2c2c3a;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: #c2a15b;
+        }
+
+        .admin-btn {
+            background: linear-gradient(135deg, #c2a15b, #9a7b3e);
+            color: white !important;
+            padding: 0.6rem 1.3rem;
+            border-radius: 40px;
+            box-shadow: 0 4px 10px rgba(194, 161, 91, 0.3);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=1600');
+            background-size: cover;
+            background-position: center;
+            min-height: 550px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            margin-top: 70px;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            color: white;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 60px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 1rem 2rem;
+            background: #c2a15b;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .search-box button:hover {
+            background: #9a7b3e;
+        }
+
+        .properties {
+            padding: 5rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            font-family: 'Playfair Display', serif;
+            color: #1e2a3a;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+        }
+
+        .filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filters select {
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #e0d6c0;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            background: white;
+            cursor: pointer;
+            outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .property-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 2rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+            border: 1px solid rgba(194, 161, 91, 0.15);
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .property-image {
+            position: relative;
+            height: 260px;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.05);
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #c2a15b;
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .prop-type-badge {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(4px);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .property-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .property-price {
+            font-size: 1.6rem;
+            color: #c2a15b;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .property-location {
+            color: #666;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .property-features {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+            color: #555;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-details {
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 2px solid #c2a15b;
+            color: #c2a15b;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-details:hover {
+            background: #c2a15b;
+            color: white;
+        }
+
+        .feature-banner {
+            background: linear-gradient(135deg, #1e2a3a, #0f172a);
+            padding: 4rem 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .feature-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item i {
+            font-size: 2.5rem;
+            color: #c2a15b;
+            margin-bottom: 1rem;
+        }
+
+        .contact-section {
+            background: #f8f5ef;
+            padding: 5rem 2rem;
+        }
+
+        .contact-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .contact-info-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #1e2a3a;
+        }
+
+        .contact-detail-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .contact-detail-item i {
+            width: 40px;
+            height: 40px;
+            background: #c2a15b20;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c2a15b;
+            font-size: 1.2rem;
+        }
+
+        .contact-detail-item .detail {
+            flex: 1;
+        }
+
+        .detail .label {
+            font-size: 0.7rem;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .detail .value {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1e2a3a;
+        }
+
+        .contact-detail-item a {
+            text-decoration: none;
+            color: #1e2a3a;
+        }
+
+        .contact-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #e0d6c0;
+            border-radius: 12px;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-form button {
+            width: 100%;
+            padding: 1rem;
+            background: #c2a15b;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #27ae60;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            z-index: 9999;
+            display: none;
+            font-weight: 500;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 8% auto;
+            padding: 2rem;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 550px;
+        }
+
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .developer-credit {
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .developer-credit a {
+            color: #c2a15b;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero-content h1 { font-size: 2rem; }
+            .contact-container { grid-template-columns: 1fr; }
+            .property-grid { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
+            .floating-contact { right: 10px; bottom: 10px; }
+            .floating-btn { width: 45px; height: 45px; }
+            .floating-btn i { font-size: 1.3rem; }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+            color: #c2a15b;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Contact Buttons -->
+    <div class="floating-contact">
+        <a href="tel:+917039970544" class="floating-btn btn-call">
+            <i class="fas fa-phone-alt"></i>
+            <span class="tooltip-text">Call Us</span>
+        </a>
+        <a href="https://wa.me/917039970544" target="_blank" class="floating-btn btn-whatsapp">
+            <i class="fab fa-whatsapp"></i>
+            <span class="tooltip-text">WhatsApp</span>
+        </a>
+        <a href="mailto:eliteestate111@gmail.com" class="floating-btn btn-email">
+            <i class="fas fa-envelope"></i>
+            <span class="tooltip-text">Email Us</span>
+        </a>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-building"></i> EliteEstates MH
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#properties">Properties</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="admin.html" class="admin-btn">Admin Portal</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Premium Real Estate Across Maharashtra</h1>
+            <p>Commercial Spaces • Luxury Flats • Retail Shops • Villas</p>
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search by city (Mumbai, Pune, Nagpur, Nashik...) or property type">
+                <button id="searchBtn"><i class="fas fa-search"></i> Search</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties" class="properties">
+        <h2 class="section-title">Exclusive Properties</h2>
+        <p class="section-subtitle">Commercial & Residential | Best Deals in ₹</p>
+        <div class="filters">
+            <select id="filterType">
+                <option value="">All Types</option>
+                <option value="Commercial">🏢 Commercial (Office/Shop)</option>
+                <option value="Residential">🏠 Residential Flat</option>
+                <option value="Villa">🏰 Luxury Villa</option>
+                <option value="Retail">🛍️ Retail Showroom</option>
+            </select>
+            <select id="filterBHK">
+                <option value="">BHK (Residential)</option>
+                <option value="1">1 BHK</option>
+                <option value="2">2 BHK</option>
+                <option value="3">3 BHK</option>
+                <option value="4">4+ BHK</option>
+            </select>
+            <select id="filterPrice">
+                <option value="">Budget Range (₹)</option>
+                <option value="0-5000000">Under ₹50 Lacs</option>
+                <option value="5000000-10000000">₹50L - ₹1 Cr</option>
+                <option value="10000000-20000000">₹1 Cr - ₹2 Cr</option>
+                <option value="20000000-50000000">₹2 Cr - ₹5 Cr</option>
+                <option value="50000000+">₹5 Cr+</option>
+            </select>
+        </div>
+        <div class="property-grid" id="propertyGrid">
+            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading premium listings...</div>
+        </div>
+    </section>
+
+    <section id="features" class="feature-banner">
+        <h2 style="font-family: 'Playfair Display'; font-size: 2rem;">Why Choose Us?</h2>
+        <div class="feature-grid">
+            <div class="feature-item"><i class="fas fa-handshake"></i><h3>100% Verified</h3><p>RERA registered properties</p></div>
+            <div class="feature-item"><i class="fas fa-chart-line"></i><h3>Best ROI</h3><p>High appreciation zones</p></div>
+            <div class="feature-item"><i class="fas fa-file-signature"></i><h3>Legal Assistance</h3><p>End-to-end documentation</p></div>
+            <div class="feature-item"><i class="fas fa-vr-cardboard"></i><h3>Virtual Tours</h3><p>360° property walkthrough</p></div>
+            <div class="feature-item"><i class="fas fa-rupee-sign"></i><h3>Home Loan Support</h3><p>8+ banks tie-ups</p></div>
+            <div class="feature-item"><i class="fas fa-clock"></i><h3>24/7 Concierge</h3><p>Dedicated RM for NRI/Indian</p></div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <div class="contact-container">
+            <div class="contact-info-card">
+                <h3><i class="fas fa-address-card"></i> Get in Touch</h3>
+                <div class="contact-detail-item">
+                    <i class="fas fa-phone-alt"></i>
+                    <div class="detail">
+                        <div class="label">Phone / WhatsApp</div>
+                        <div class="value"><a href="tel:+917039970544">+91 70399 70544</a></div>
+                    </div>
+                </div>
+                <div class="contact-detail-item">
+                    <i class="fas fa-envelope"></i>
+                    <div class="detail">
+                        <div class="label">Email Address</div>
+                        <div class="value"><a href="mailto:eliteestate111@gmail.com">eliteestate111@gmail.com</a></div>
+                    </div>
+                </div>
+                <div class="contact-detail-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <div class="detail">
+                        <div class="label">WhatsApp Chat</div>
+                        <div class="value"><a href="https://wa.me/917039970544" target="_blank">Click to Chat on WhatsApp</a></div>
+                    </div>
+                </div>
+                <div class="contact-detail-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="detail">
+                        <div class="label">Office Location</div>
+                        <div class="value">Mumbai, Pune, Nagpur, Nashik, Maharashtra</div>
+                    </div>
+                </div>
+                <div class="contact-detail-item">
+                    <i class="fas fa-clock"></i>
+                    <div class="detail">
+                        <div class="label">Business Hours</div>
+                        <div class="value">Mon-Sat: 10:00 AM - 7:00 PM</div>
+                    </div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <h3>Send Your Enquiry</h3>
+                <form id="contactForm">
+                    <input type="text" id="contactName" placeholder="Full Name" required>
+                    <input type="email" id="contactEmail" placeholder="Email ID" required>
+                    <input type="tel" id="contactPhone" placeholder="Mobile Number" required>
+                    <textarea id="contactMessage" rows="3" placeholder="I'm looking for... (Commercial / Residential)"></textarea>
+                    <button type="submit">Send Enquiry <i class="fas fa-arrow-right"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="inquiryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" style="float:right; font-size:28px; cursor:pointer;" onclick="closeInquiryModal()">&times;</span>
+            <h3 style="color:#c2a15b;">📞 Schedule a Site Visit</h3>
+            <p id="propertyTitle" style="margin: 10px 0;"></p>
+            <form id="inquiryForm">
+                <input type="text" id="customerName" placeholder="Full Name" required>
+                <input type="email" id="customerEmail" placeholder="Email" required>
+                <input type="tel" id="customerPhone" placeholder="Phone" required>
+                <select id="customerBudget">
+                    <option value="">Preferred Budget (₹)</option>
+                    <option value="50L-1Cr">₹50 Lakh - ₹1 Crore</option>
+                    <option value="1Cr-2Cr">₹1 Cr - ₹2 Cr</option>
+                    <option value="2Cr-5Cr">₹2 Cr - ₹5 Cr</option>
+                    <option value="5Cr+">₹5 Cr+</option>
+                </select>
+                <textarea id="customerRequirements" rows="2" placeholder="Preferred location / commercial need..."></textarea>
+                <input type="hidden" id="selectedPropertyId">
+                <button type="submit">Request Callback</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+    
+    <footer>
+        <p>© 2025 Luxury Estates Maharashtra | RERA Approved | All trademarks acknowledged.</p>
+        <div class="developer-credit">
+            <p>Developed with <i class="fas fa-heart" style="color: #c2a15b;"></i> by <strong>Shiv Vishwakarma</strong> | Elite Estates</p>
+        </div>
+    </footer>
+
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
+    <script>
+        // Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyASxBb3NOIqhaYv8ROGYJ6SdqrlT_cXBo",
+            authDomain: "realestate-lead.firebaseapp.com",
+            projectId: "realestate-lead",
+            storageBucket: "realestate-lead.firebasestorage.app",
+            messagingSenderId: "416851177138",
+            appId: "1:416851177130:web:d3737cff3496224b5d2ad3"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        let selectedPropertyId = null;
+
+        function showToast(msg, isErr = false) {
+            const toast = document.getElementById('toast');
+            toast.style.backgroundColor = isErr ? '#e74c3c' : '#c2a15b';
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3500);
+        }
+
+        // MAHARASHTRA PREMIUM PROPERTIES
+        const maharashtraProperties = [
+            { title: "Luxury 3BHK Sea View", price: 32500000, location: "Worli, Mumbai", type: "Residential", bedrooms: 3, bathrooms: 3, area: 1850, status: "Ready to Move", imageUrl: "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=400", city: "Mumbai", bhk: 3 },
+            { title: "Premium Commercial Office", price: 87500000, location: "BKC, Bandra East", type: "Commercial", bedrooms: 0, bathrooms: 4, area: 4200, status: "Lease/Sale", imageUrl: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=400", city: "Mumbai", bhk: 0 },
+            { title: "IT Park Retail Showroom", price: 45000000, location: "Viman Nagar, Pune", type: "Retail", bedrooms: 0, bathrooms: 2, area: 1100, status: "High Footfall", imageUrl: "https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=400", city: "Pune", bhk: 0 },
+            { title: "4BHK Luxury Villa", price: 120000000, location: "Baner, Pune", type: "Villa", bedrooms: 4, bathrooms: 5, area: 3800, status: "Gated Community", imageUrl: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400", city: "Pune", bhk: 4 },
+            { title: "2BHK Modern Flat", price: 8500000, location: "Dharampeth, Nagpur", type: "Residential", bedrooms: 2, bathrooms: 2, area: 980, status: "Near Metro", imageUrl: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=400", city: "Nagpur", bhk: 2 },
+            { title: "Commercial Office Space", price: 29500000, location: "Civil Lines, Nagpur", type: "Commercial", bedrooms: 0, bathrooms: 3, area: 2200, status: "Prime Location", imageUrl: "https://images.unsplash.com/photo-1497366811353-87a1e6d2e28b?w=400", city: "Nagpur", bhk: 0 },
+            { title: "1BHK Affordable Flat", price: 4200000, location: "Panchavati, Nashik", type: "Residential", bedrooms: 1, bathrooms: 1, area: 550, status: "Near Godavari", imageUrl: "https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=400", city: "Nashik", bhk: 1 },
+            { title: "Retail Shop in Mall", price: 6800000, location: "College Road, Nashik", type: "Retail", bedrooms: 0, bathrooms: 1, area: 380, status: "High Street", imageUrl: "https://images.unsplash.com/photo-1600585154526-990dced4db0d?w=400", city: "Nashik", bhk: 0 },
+            { title: "3BHK Premium Apartment", price: 14200000, location: "Kharadi, Pune", type: "Residential", bedrooms: 3, bathrooms: 2, area: 1320, status: "Smart Home", imageUrl: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400", city: "Pune", bhk: 3 },
+            { title: "Corporate IT Office", price: 210000000, location: "Hinjewadi Phase 3, Pune", type: "Commercial", bedrooms: 0, bathrooms: 8, area: 8500, status: "SEZ Zone", imageUrl: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400", city: "Pune", bhk: 0 },
+            { title: "Luxury Penthouse", price: 55000000, location: "Ghatkopar West, Mumbai", type: "Residential", bedrooms: 4, bathrooms: 4, area: 2450, status: "Sky Lounge", imageUrl: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400", city: "Mumbai", bhk: 4 },
+            { title: "Commercial Showroom", price: 38000000, location: "MG Road, Thane", type: "Commercial", bedrooms: 0, bathrooms: 2, area: 1450, status: "Brand Outlet", imageUrl: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400", city: "Thane", bhk: 0 },
+            { title: "2BHK Modern Flat", price: 7200000, location: "Aurangabad City", type: "Residential", bedrooms: 2, bathrooms: 2, area: 890, status: "Near Railway", imageUrl: "https://images.unsplash.com/photo-1574362848149-32796bb8f150?w=400", city: "Aurangabad", bhk: 2 },
+            { title: "Warehouse/Industrial", price: 14500000, location: "MIDC, Chhatrapati Sambhajinagar", type: "Commercial", bedrooms: 0, bathrooms: 2, area: 3200, status: "Loading Dock", imageUrl: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400", city: "Aurangabad", bhk: 0 }
+        ];
+
+        async function seedPropertiesIfEmpty() {
+            const snapshot = await db.collection('properties').limit(1).get();
+            if (snapshot.empty) {
+                for (let p of maharashtraProperties) {
+                    await db.collection('properties').add({
+                        ...p,
+                        price: p.price,
+                        bathrooms: p.bathrooms || 1,
+                        area: p.area,
+                        timestamp: new Date().toISOString()
+                    });
+                }
+                showToast("✨ 14+ premium Maharashtra properties loaded");
+            }
+            loadProperties();
+        }
+
+        async function loadProperties() {
+            const grid = document.getElementById('propertyGrid');
+            grid.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading premium listings...</div>';
+            try {
+                const snap = await db.collection('properties').get();
+                let props = [];
+                snap.forEach(doc => props.push({ id: doc.id, ...doc.data() }));
+                if (props.length === 0) {
+                    grid.innerHTML = '<div class="loading">Loading properties...</div>';
+                    return;
+                }
+                renderProperties(props);
+            } catch (err) {
+                grid.innerHTML = '<div class="loading">⚠️ Unable to load. Check connection.</div>';
+            }
+        }
+
+        function renderProperties(properties) {
+            const grid = document.getElementById('propertyGrid');
+            const typeFilter = document.getElementById('filterType').value;
+            const bhkFilter = document.getElementById('filterBHK').value;
+            const priceRange = document.getElementById('filterPrice').value;
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+
+            let filtered = properties.filter(p => {
+                if (typeFilter && p.type !== typeFilter) return false;
+                if (bhkFilter && p.bhk && p.bhk.toString() !== bhkFilter && !(bhkFilter === "4" && p.bhk >= 4)) {
+                    if (p.bhk && p.bhk < parseInt(bhkFilter) && bhkFilter !== "4") return false;
+                    if (bhkFilter === "4" && p.bhk < 4) return false;
+                }
+                if (priceRange) {
+                    let [min, max] = priceRange.split('-');
+                    if (max === '50000000+') max = Infinity;
+                    if (p.price < parseInt(min) || p.price > parseInt(max)) return false;
+                }
+                if (searchTerm && !(p.title?.toLowerCase().includes(searchTerm) || p.location?.toLowerCase().includes(searchTerm) || p.city?.toLowerCase().includes(searchTerm))) return false;
+                return true;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="loading">🔍 No matching properties. Try adjusting filters.</div>';
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => `
+                <div class="property-card">
+                    <div class="property-image">
+                        <img src="${p.imageUrl || 'https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=400'}" alt="${p.title}">
+                        <div class="property-badge">${p.status || 'Premium'}</div>
+                        <div class="prop-type-badge">${p.type === 'Commercial' ? '🏢 Commercial' : p.type === 'Residential' ? '🏠 Residential' : p.type === 'Villa' ? '🏰 Villa' : '🛍️ Retail'}</div>
+                    </div>
+                    <div class="property-info">
+                        <h3>${p.title}</h3>
+                        <div class="property-price">₹ ${(p.price).toLocaleString('en-IN')}</div>
+                        <div class="property-location"><i class="fas fa-map-marker-alt"></i> ${p.location}, ${p.city || 'Maharashtra'}</div>
+                        <div class="property-features">
+                            ${p.bedrooms > 0 ? `<span><i class="fas fa-bed"></i> ${p.bedrooms} BHK</span>` : `<span><i class="fas fa-building"></i> Commercial</span>`}
+                            <span><i class="fas fa-vector-square"></i> ${p.area} sq.ft</span>
+                            <span><i class="fas fa-bath"></i> ${p.bathrooms || 2} Baths</span>
+                        </div>
+                        <button class="btn-details" onclick="openInquiryModal('${p.id}', '${p.title.replace(/'/g, "\\'")}')">
+                            <i class="fas fa-calendar-check"></i> Schedule Visit
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.openInquiryModal = (id, title) => {
+            selectedPropertyId = id;
+            document.getElementById('propertyTitle').innerHTML = `<strong>${title}</strong><br>📍 Exclusive Deal`;
+            document.getElementById('selectedPropertyId').value = id;
+            document.getElementById('inquiryModal').style.display = 'block';
+        };
+        window.closeInquiryModal = () => {
+            document.getElementById('inquiryModal').style.display = 'none';
+            document.getElementById('inquiryForm').reset();
+        };
+
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('contactName').value,
+                email: document.getElementById('contactEmail').value,
+                phone: document.getElementById('contactPhone').value,
+                message: document.getElementById('contactMessage').value,
+                timestamp: new Date().toISOString()
+            };
+            try {
+                await db.collection('contacts').add(data);
+                showToast("✅ Enquiry received! We'll contact you within 2 hours.");
+                e.target.reset();
+            } catch (err) { showToast("Error, try again", true); }
+        });
+
+        document.getElementById('inquiryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const inq = {
+                name: document.getElementById('customerName').value,
+                email: document.getElementById('customerEmail').value,
+                phone: document.getElementById('customerPhone').value,
+                budget: document.getElementById('customerBudget').value,
+                requirements: document.getElementById('customerRequirements').value,
+                propertyId: selectedPropertyId,
+                timestamp: new Date().toISOString()
+            };
+            try {
+                await db.collection('inquiries').add(inq);
+                showToast("📞 Site visit request sent! Agent will connect within 1 hour.");
+                closeInquiryModal();
+            } catch(e) { showToast("Server issue", true); }
+        });
+
+        document.getElementById('searchBtn').addEventListener('click', () => loadProperties());
+        document.getElementById('filterType').addEventListener('change', () => loadProperties());
+        document.getElementById('filterBHK').addEventListener('change', () => loadProperties());
+        document.getElementById('filterPrice').addEventListener('change', () => loadProperties());
+        window.onclick = (e) => { if (e.target === document.getElementById('inquiryModal')) closeInquiryModal(); };
+
+        document.addEventListener('DOMContentLoaded', () => seedPropertiesIfEmpty());
+    </script>
+</body>
+</html>

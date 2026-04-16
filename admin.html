@@ -2,10 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Secure Admin Portal | Luxury Estates</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Luxury Estates | Dual-Theme Admin Suite</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -15,38 +16,124 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
+            transition: background-color 0.3s ease, color 0.2s ease;
         }
 
-        /* Login Page Styles */
+        /* ========= LIGHT THEME (Default - same as original) ========= */
+        body.light-theme {
+            background: #f0f4f8;
+            color: #1a2a3a;
+        }
+
+        body.light-theme .login-container {
+            background: linear-gradient(125deg, #e8eef4 0%, #dce3ec 100%);
+        }
+
+        body.light-theme .login-card {
+            background: white;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+
+        body.light-theme .login-header h2 { color: #1e3a5f; }
+        body.light-theme .input-group input { background: #f8fafc; border-color: #e2e8f0; color: #1a2a3a; }
+        body.light-theme .sidebar { background: #ffffff; border-right-color: #e4e9f0; }
+        body.light-theme .sidebar-logo h2 { color: #1e3a5f; }
+        body.light-theme .sidebar-menu li { color: #4a5b6e; }
+        body.light-theme .sidebar-menu li:hover { background: #eef3fc; color: #2c5f8a; }
+        body.light-theme .sidebar-menu li.active { background: #e6f0fa; color: #2c5f8a; }
+        body.light-theme .main-content { background: #f7fafc; }
+        body.light-theme .top-bar, body.light-theme .stat-card, body.light-theme .data-card { background: white; border-color: #eef2f6; }
+        body.light-theme .top-bar h1 { color: #1e3a5f; }
+        body.light-theme .stat-number { color: #2c5f8a; }
+        body.light-theme th { background: #f8fafc; color: #2c5f8a; border-bottom-color: #e2e8f0; }
+        body.light-theme td { color: #2d3e50; border-bottom-color: #ecf3f9; }
+        body.light-theme .modal-content { background: white; }
+        body.light-theme .form-group input, 
+        body.light-theme .form-group select, 
+        body.light-theme .form-group textarea { background: #f9fbfd; border-color: #cbd5e1; color: #1a2a3a; }
+
+        /* ========= DARK THEME (Premium Dark) ========= */
+        body.dark-theme {
+            background: #0a0e1a;
+            color: #e2e8f0;
+        }
+
+        body.dark-theme .login-container {
+            background: linear-gradient(135deg, #0a0e1a 0%, #0f1622 100%);
+        }
+
+        body.dark-theme .login-card {
+            background: #141b2b;
+            border: 1px solid #2d3a5e;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+        }
+
+        body.dark-theme .login-header h2 {
+            background: linear-gradient(135deg, #e2c28b, #c2a15b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        body.dark-theme .login-header p { color: #8a9bb5; }
+        body.dark-theme .input-group label { color: #a0b3d9; }
+        body.dark-theme .input-group input {
+            background: #0f1625;
+            border-color: #2a3650;
+            color: #e2e8f0;
+        }
+        body.dark-theme .input-group input:focus { border-color: #c2a15b; box-shadow: 0 0 0 4px rgba(194,161,91,0.2); }
+        body.dark-theme .login-btn { background: linear-gradient(105deg, #c2a15b, #9a7b3e); color: #0a0e1a; }
+        body.dark-theme .sidebar { background: #0f1625; border-right-color: #1e2a3e; box-shadow: none; }
+        body.dark-theme .sidebar-logo h2 { background: linear-gradient(135deg, #e2c28b, #c2a15b); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        body.dark-theme .sidebar-menu li { color: #9aaec9; }
+        body.dark-theme .sidebar-menu li:hover { background: rgba(194,161,91,0.15); color: #e2c28b; }
+        body.dark-theme .sidebar-menu li.active { background: rgba(194,161,91,0.2); color: #e2c28b; border-left-color: #c2a15b; }
+        body.dark-theme .logout-btn { background: rgba(220,38,38,0.15); color: #f87171 !important; }
+        body.dark-theme .logout-btn:hover { background: rgba(220,38,38,0.3) !important; }
+        body.dark-theme .main-content { background: #0a0f1a; }
+        body.dark-theme .top-bar { background: #141c2c; border-color: #1e2a3e; }
+        body.dark-theme .top-bar h1 { color: #e2c28b; }
+        body.dark-theme .top-bar p { color: #8a9bb5; }
+        body.dark-theme .stat-card { background: #141c2c; border-color: #1e2a3e; }
+        body.dark-theme .stat-card .stat-number { color: #e2c28b; }
+        body.dark-theme .data-card { background: #141c2c; border-color: #1e2a3e; }
+        body.dark-theme .table-header h3 { color: #e2c28b; }
+        body.dark-theme .search-input { background: #0f1625; border-color: #2a3650; color: #e2e8f0; }
+        body.dark-theme .search-input::placeholder { color: #5c6e8a; }
+        body.dark-theme .btn-add { background: #c2a15b; color: #0a0e1a; }
+        body.dark-theme .btn-sync { background: #475569; color: white; }
+        body.dark-theme .btn-excel { background: #2e7d5e; color: white; }
+        body.dark-theme th { background: #0f1628; color: #e2c28b; border-bottom-color: #2a3650; }
+        body.dark-theme td { color: #cbd5e6; border-bottom-color: #1e2a3c; }
+        body.dark-theme .modal-content { background: #141c2c; border: 1px solid #c2a15b; }
+        body.dark-theme .modal-content h2 { color: #e2c28b; }
+        body.dark-theme .form-group label { color: #c2a15b; }
+        body.dark-theme .form-group input, 
+        body.dark-theme .form-group select, 
+        body.dark-theme .form-group textarea { background: #0f1625; border-color: #2a3650; color: #e2e8f0; }
+        body.dark-theme .toast { background: #141c2c; border-left: 4px solid #c2a15b; color: #e2e8f0; }
+        body.dark-theme .status-new { background: #1e3a8a; color: #93c5fd; }
+        body.dark-theme .status-contacted { background: #7c2d12; color: #fdba74; }
+        body.dark-theme .status-converted { background: #14532d; color: #86efac; }
+
+        /* ========= COMMON STYLES ========= */
         .login-container {
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            padding: 1rem;
+            padding: 1.5rem;
         }
 
         .login-card {
-            background: rgba(255,255,255,0.98);
-            border-radius: 32px;
-            padding: 2.5rem;
+            border-radius: 48px;
+            padding: 2.8rem 2.5rem;
             width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-            animation: fadeInUp 0.5s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            max-width: 460px;
+            transition: 0.3s;
         }
 
         .login-header {
@@ -55,20 +142,13 @@
         }
 
         .login-header i {
-            font-size: 3rem;
+            font-size: 3.5rem;
             color: #c2a15b;
-            margin-bottom: 1rem;
         }
 
         .login-header h2 {
-            font-size: 1.8rem;
-            color: #0f172a;
+            font-size: 1.9rem;
             font-weight: 700;
-        }
-
-        .login-header p {
-            color: #5b6e8c;
-            font-size: 0.85rem;
             margin-top: 0.5rem;
         }
 
@@ -79,256 +159,228 @@
         .input-group label {
             display: block;
             font-size: 0.75rem;
-            font-weight: 600;
-            text-transform: uppercase;
+            font-weight: 700;
             letter-spacing: 1px;
-            color: #475569;
+            text-transform: uppercase;
             margin-bottom: 0.5rem;
         }
 
         .input-group input {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 16px;
+            padding: 1rem 1.2rem;
+            border: 2px solid;
+            border-radius: 28px;
             font-size: 1rem;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .input-group input:focus {
-            outline: none;
-            border-color: #c2a15b;
-            box-shadow: 0 0 0 3px rgba(194,161,91,0.2);
+            transition: all 0.2s;
         }
 
         .login-btn {
             width: 100%;
             padding: 1rem;
-            background: linear-gradient(135deg, #c2a15b, #9a7b3e);
-            color: white;
             border: none;
-            border-radius: 16px;
+            border-radius: 40px;
+            font-weight: 700;
             font-size: 1rem;
-            font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
 
-        .login-btn:hover {
-            transform: translateY(-2px);
-        }
+        .login-btn:hover { transform: translateY(-2px); }
 
         .error-message {
             background: #fee2e2;
-            color: #dc2626;
-            padding: 0.8rem;
-            border-radius: 12px;
-            font-size: 0.85rem;
+            color: #c2410c;
+            padding: 0.75rem;
+            border-radius: 40px;
             margin-top: 1rem;
-            text-align: center;
             display: none;
+            text-align: center;
         }
 
-        .security-badge {
-            text-align: center;
-            margin-top: 1.5rem;
-            font-size: 0.7rem;
-            color: #94a3b8;
-        }
-
-        /* Admin Dashboard Styles (hidden initially) */
-        .admin-wrapper {
-            display: none;
-        }
+        /* Admin Dashboard */
+        .admin-wrapper { display: none; height: 100vh; overflow: hidden; }
 
         .sidebar {
             position: fixed;
             left: 0;
             top: 0;
-            width: 280px;
+            width: 270px;
             height: 100%;
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-            color: #e2e8f0;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
             z-index: 100;
+            overflow-y: auto;
+            transition: all 0.3s;
         }
 
         .sidebar-logo {
             padding: 1.8rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(0,0,0,0.05);
         }
 
         .sidebar-logo h2 {
-            font-size: 1.4rem;
-            font-weight: 600;
-            background: linear-gradient(135deg, #c2a15b, #e2c28b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .sidebar-logo i {
-            color: #c2a15b;
-            margin-right: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
         }
 
         .sidebar-menu {
             list-style: none;
-            padding: 0 1rem;
+            padding: 1.2rem 1rem;
         }
 
         .sidebar-menu li {
-            padding: 0.9rem 1.2rem;
+            padding: 0.8rem 1.2rem;
             margin: 0.3rem 0;
-            border-radius: 12px;
+            border-radius: 16px;
             cursor: pointer;
-            transition: all 0.2s;
             font-weight: 500;
             display: flex;
             align-items: center;
             gap: 12px;
+            transition: all 0.2s;
         }
 
-        .sidebar-menu li i {
-            width: 24px;
-        }
-
-        .sidebar-menu li:hover {
-            background: rgba(194, 161, 91, 0.2);
-        }
-
-        .sidebar-menu li.active {
-            background: linear-gradient(95deg, #c2a15b20, #c2a15b10);
-            border-left: 3px solid #c2a15b;
-            color: #c2a15b;
-        }
-
-        .logout-btn {
-            position: absolute;
-            bottom: 2rem;
-            width: calc(100% - 2rem);
-            margin: 0 1rem;
-            background: rgba(220, 38, 38, 0.2);
-            border: 1px solid rgba(220,38,38,0.3);
-        }
+        .sidebar-menu li i { width: 24px; font-size: 1.1rem; }
 
         .main-content {
-            margin-left: 280px;
+            margin-left: 270px;
+            height: 100vh;
+            overflow-y: auto;
             padding: 1.5rem 2rem;
+            transition: all 0.3s;
         }
 
+        .main-content::-webkit-scrollbar { width: 8px; }
+        .main-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        .main-content::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.2); border-radius: 10px; }
+
         .top-bar {
-            background: white;
-            padding: 1rem 1.8rem;
-            border-radius: 20px;
-            margin-bottom: 2rem;
+            border-radius: 28px;
+            padding: 1rem 2rem;
+            margin-bottom: 1.8rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid;
         }
+
+        .top-bar h1 { font-weight: 700; font-size: 1.6rem; }
+        .top-bar p { font-size: 0.8rem; margin-top: 4px; }
+
+        /* Theme Toggle Button */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.3rem;
+            padding: 8px 12px;
+            border-radius: 40px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        body.light-theme .theme-toggle { background: #eef2f6; color: #2c5f8a; }
+        body.dark-theme .theme-toggle { background: #2a3650; color: #e2c28b; }
 
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
             gap: 1.2rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.8rem;
         }
 
         .stat-card {
-            background: white;
-            padding: 1.2rem;
-            border-radius: 20px;
+            border-radius: 28px;
+            padding: 1.3rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            border: 1px solid;
+            transition: all 0.2s;
         }
 
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+        .stat-number { font-size: 2.3rem; font-weight: 800; line-height: 1.2; }
 
         .data-card {
-            background: white;
-            border-radius: 24px;
+            border-radius: 28px;
             padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid;
         }
 
         .table-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 1.5rem;
             flex-wrap: wrap;
             gap: 1rem;
+            margin-bottom: 1.5rem;
         }
+
+        .table-header h3 { font-weight: 700; font-size: 1.3rem; }
 
         .search-input {
-            padding: 0.6rem 1rem;
-            border: 1px solid #e2e8f0;
+            padding: 0.6rem 1.2rem;
             border-radius: 40px;
-            width: 260px;
-            outline: none;
+            width: 250px;
+            font-size: 0.9rem;
+            border: 1px solid;
         }
 
-        .btn-add {
-            background: #c2a15b;
-            color: white;
+        .btn-excel, .btn-add, .btn-sync {
             border: none;
             padding: 0.6rem 1.3rem;
             border-radius: 40px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
+            transition: 0.2s;
         }
+        .btn-excel:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn-add:hover { opacity: 0.9; transform: scale(1.02); }
+        .btn-sync:hover { opacity: 0.9; }
 
         .table-wrapper {
             overflow-x: auto;
+            max-height: 55vh;
+            overflow-y: auto;
+            border-radius: 20px;
         }
+        .table-wrapper::-webkit-scrollbar { width: 6px; height: 6px; }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
+            min-width: 650px;
         }
-
         th {
             text-align: left;
-            padding: 1rem 0.8rem;
-            background: #f8fafc;
-            font-weight: 600;
-            border-bottom: 2px solid #e2e8f0;
+            padding: 1rem 0.9rem;
+            font-weight: 700;
+            border-bottom: 2px solid;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
-
         td {
-            padding: 0.9rem 0.8rem;
-            border-bottom: 1px solid #f1f5f9;
+            padding: 0.9rem 0.9rem;
+            border-bottom: 1px solid;
         }
-
         .status-badge {
-            padding: 0.2rem 0.7rem;
-            border-radius: 30px;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
             font-size: 0.7rem;
-            font-weight: 600;
+            font-weight: 700;
             display: inline-block;
         }
-
-        .status-new { background: #dbeafe; color: #1e40af; }
-        .status-contacted { background: #fff7ed; color: #c2410c; }
-        .status-converted { background: #dcfce7; color: #15803d; }
-
         .action-icons i {
-            margin: 0 5px;
+            margin: 0 6px;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            transition: 0.1s;
         }
-
-        .fa-edit { color: #3b82f6; }
-        .fa-trash-alt { color: #ef4444; }
 
         .modal {
             display: none;
@@ -338,137 +390,109 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.6);
+            background: rgba(0,0,0,0.5);
             backdrop-filter: blur(4px);
         }
-
         .modal-content {
-            background: white;
             margin: 3% auto;
             padding: 2rem;
-            border-radius: 28px;
+            border-radius: 36px;
             width: 90%;
-            max-width: 700px;
+            max-width: 680px;
             max-height: 85vh;
             overflow-y: auto;
         }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
+        .form-group { margin-bottom: 1.2rem; }
+        .form-group label { font-weight: 600; display: block; margin-bottom: 0.4rem; }
         .form-group input, .form-group select, .form-group textarea {
             width: 100%;
-            padding: 0.7rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            border: 1px solid;
+            border-radius: 20px;
+            font-size: 0.9rem;
         }
-
         .toast {
             position: fixed;
             bottom: 25px;
             right: 25px;
-            background: #1e293b;
-            color: white;
             padding: 0.8rem 1.5rem;
             border-radius: 50px;
             z-index: 9999;
             display: none;
+            font-weight: 500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
         @media (max-width: 800px) {
-            .sidebar { transform: translateX(-100%); }
+            .sidebar { transform: translateX(-100%); position: fixed; z-index: 1000; }
             .main-content { margin-left: 0; }
         }
     </style>
 </head>
-<body>
-    <!-- Login Screen -->
+<body class="light-theme">
+    <!-- LOGIN -->
     <div id="loginScreen" class="login-container">
         <div class="login-card">
             <div class="login-header">
-                <i class="fas fa-shield-alt"></i>
-                <h2>Admin Portal</h2>
-                <p>Restricted Access • Authorized Personnel Only</p>
+                <i class="fas fa-building"></i>
+                <h2>Luxury Estates</h2>
+                <p style="opacity:0.7;">Secure Admin Portal</p>
             </div>
             <form id="loginForm">
-                <div class="input-group">
-                    <label><i class="fas fa-user"></i> USERNAME</label>
-                    <input type="text" id="username" placeholder="Enter username" autocomplete="off">
-                </div>
-                <div class="input-group">
-                    <label><i class="fas fa-lock"></i> PASSWORD</label>
-                    <input type="password" id="password" placeholder="Enter password">
-                </div>
-                <button type="submit" class="login-btn"><i class="fas fa-sign-in-alt"></i> Authenticate</button>
-                <div id="loginError" class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i> Invalid credentials. Access denied.
-                </div>
-                <div class="security-badge">
-                    <i class="fas fa-fingerprint"></i> Secure AES-256 Encrypted Session
-                </div>
+                <div class="input-group"><label>USERNAME</label><input type="text" id="username" autocomplete="off" placeholder="ADMIN"></div>
+                <div class="input-group"><label>PASSWORD</label><input type="password" id="password" placeholder="••••••"></div>
+                <button type="submit" class="login-btn"><i class="fas fa-lock"></i> Access Dashboard</button>
+                <div id="loginError" class="error-message"><i class="fas fa-exclamation-triangle"></i> Invalid credentials</div>
             </form>
         </div>
     </div>
 
-    <!-- Admin Dashboard (Hidden until login) -->
+    <!-- DASHBOARD -->
     <div id="adminDashboard" class="admin-wrapper">
         <div class="sidebar">
-            <div class="sidebar-logo">
-                <h2><i class="fas fa-crown"></i> Elite Admin</h2>
-                <p style="font-size: 0.7rem; margin-top: 5px;">Firestore Manager</p>
-            </div>
+            <div class="sidebar-logo"><h2><i class="fas fa-crown"></i> EliteAdmin</h2></div>
             <ul class="sidebar-menu">
                 <li data-collection="dashboard" class="active" onclick="switchCollection('dashboard')"><i class="fas fa-chart-pie"></i> Dashboard</li>
                 <li data-collection="properties" onclick="switchCollection('properties')"><i class="fas fa-building"></i> Properties</li>
                 <li data-collection="inquiries" onclick="switchCollection('inquiries')"><i class="fas fa-envelope"></i> Inquiries</li>
-                <li data-collection="contacts" onclick="switchCollection('contacts')"><i class="fas fa-phone"></i> Contacts</li>
+                <li data-collection="contacts" onclick="switchCollection('contacts')"><i class="fas fa-phone-alt"></i> Contacts</li>
                 <li data-collection="subscribers" onclick="switchCollection('subscribers')"><i class="fas fa-users"></i> Subscribers</li>
-                <li class="logout-btn" onclick="logout()" style="margin-top: 3rem; background: rgba(220,38,38,0.2);"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                <li class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</li>
             </ul>
         </div>
 
         <div class="main-content">
             <div class="top-bar">
-                <div>
-                    <h1 id="currentPageTitle">Secure Dashboard</h1>
-                    <p>Welcome, Administrator | Full Database Access</p>
-                </div>
-                <div class="admin-avatar">
-                    <i class="fas fa-user-shield"></i>
-                    <span>SUPER ADMIN</span>
+                <div><h1 id="currentPageTitle">Command Center</h1><p>Lead management & analytics</p></div>
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()">
+                        <i class="fas fa-moon" id="themeIcon"></i> <span id="themeText">Dark Mode</span>
+                    </button>
+                    <div><i class="fas fa-user-shield" style="font-size:1.3rem;"></i> <span style="font-weight:600;">ADMIN</span></div>
                 </div>
             </div>
 
             <div id="dashboardView">
                 <div class="stats-grid" id="statsGrid"></div>
                 <div class="data-card">
-                    <h3><i class="fas fa-database"></i> Firebase Collections Overview</h3>
-                    <p style="margin-top: 1rem;">All collections from Firestore are displayed below. Click on any collection in sidebar to manage records.</p>
-                    <div style="margin-top: 1.5rem; background:#f8fafc; padding:1rem; border-radius:16px;">
-                        <i class="fas fa-check-circle" style="color:#27ae60;"></i> <strong>Connected Collections:</strong> properties, inquiries, contacts, subscribers
-                    </div>
+                    <h3><i class="fas fa-database"></i> Firestore Collections</h3>
+                    <p style="margin-top: 0.8rem;">Manage properties, buyer inquiries, contact messages, and email subscribers in real time.</p>
+                    <div style="margin-top: 1.2rem; padding:1rem; border-radius:24px; background:rgba(0,0,0,0.03);"><i class="fas fa-check-circle" style="color:#2e7d5e;"></i> Live sync active · Full CRUD operations</div>
                 </div>
             </div>
 
             <div id="collectionView" style="display: none;">
                 <div class="data-card">
                     <div class="table-header">
-                        <h3 id="collectionTitle">Properties</h3>
-                        <div style="display: flex; gap: 10px;">
-                            <input type="text" id="tableSearch" class="search-input" placeholder="🔍 Search any field...">
+                        <h3 id="collectionTitle"><i class="fas fa-table"></i> Records</h3>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <input type="text" id="tableSearch" class="search-input" placeholder="🔍 Search by any field...">
+                            <button class="btn-excel" id="exportExcelBtn"><i class="fas fa-file-excel"></i> Export Excel</button>
                             <button class="btn-add" id="addNewBtn"><i class="fas fa-plus"></i> Add Record</button>
-                            <button class="btn-add" style="background:#475569;" id="refreshTableBtn"><i class="fas fa-sync-alt"></i> Sync</button>
+                            <button class="btn-add btn-sync" id="refreshTableBtn"><i class="fas fa-sync-alt"></i> Sync</button>
                         </div>
                     </div>
-                    <div class="table-wrapper">
+                    <div class="table-wrapper" id="tableWrapper">
                         <div id="dynamicTable">Loading records...</div>
                     </div>
                 </div>
@@ -476,23 +500,53 @@
         </div>
     </div>
 
-    <div id="recordModal" class="modal">
-        <div class="modal-content">
-            <span class="close" style="float:right; font-size:28px; cursor:pointer;" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle" style="margin-bottom: 1rem;">Add Record</h2>
-            <form id="recordForm">
-                <div id="dynamicFormFields"></div>
-                <input type="hidden" id="recordId">
-                <button type="submit" class="btn-add" style="width:100%; margin-top:1rem;">Save Changes</button>
-            </form>
-        </div>
-    </div>
-
+    <div id="recordModal" class="modal"><div class="modal-content"><span style="float:right; font-size:28px; cursor:pointer;" onclick="closeModal()">&times;</span><h2 id="modalTitle" style="margin-bottom:1rem;">Manage Record</h2><form id="recordForm"><div id="dynamicFormFields"></div><input type="hidden" id="recordId"><button type="submit" class="btn-add" style="width:100%; margin-top:1rem;">💾 Save Changes</button></form></div></div>
     <div id="toast" class="toast"></div>
 
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore-compat.js"></script>
     <script>
+        // Theme Management
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeText = document.getElementById('themeText');
+            
+            if (body.classList.contains('light-theme')) {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                themeIcon.className = 'fas fa-sun';
+                themeText.innerText = 'Light Mode';
+                localStorage.setItem('adminTheme', 'dark');
+                showToast('🌙 Dark theme activated');
+            } else {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                themeIcon.className = 'fas fa-moon';
+                themeText.innerText = 'Dark Mode';
+                localStorage.setItem('adminTheme', 'light');
+                showToast('☀️ Light theme activated');
+            }
+        }
+
+        // Load saved theme
+        function loadSavedTheme() {
+            const savedTheme = localStorage.getItem('adminTheme');
+            if (savedTheme === 'dark') {
+                document.body.classList.remove('light-theme');
+                document.body.classList.add('dark-theme');
+                const themeIcon = document.getElementById('themeIcon');
+                const themeText = document.getElementById('themeText');
+                if (themeIcon) {
+                    themeIcon.className = 'fas fa-sun';
+                    themeText.innerText = 'Light Mode';
+                }
+            } else {
+                document.body.classList.add('light-theme');
+                document.body.classList.remove('dark-theme');
+            }
+        }
+
         // Firebase Config
         const firebaseConfig = {
             apiKey: "AIzaSyASxBb3NOIqhaYv8ROGYJ6SdqrlT_cXBo",
@@ -505,17 +559,22 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // AUTHENTICATION CREDENTIALS (Hardcoded for single admin)
         const ADMIN_USERNAME = "ADMIN111";
         const ADMIN_PASSWORD = "maa123";
-
         let currentCollection = 'dashboard';
         let allDocs = [];
 
-        // Session Management
+        function showToast(msg, isError = false) {
+            const toast = document.getElementById('toast');
+            toast.style.backgroundColor = isError ? '#b91c1c' : '#2c5f8a';
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 3000);
+        }
+
         function checkAuth() {
-            const isLoggedIn = sessionStorage.getItem('adminAuthenticated');
-            if (isLoggedIn === 'true') {
+            const logged = sessionStorage.getItem('adminAuthenticated');
+            if (logged === 'true') {
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('adminDashboard').style.display = 'block';
                 loadDashboardStats();
@@ -525,40 +584,23 @@
             }
         }
 
-        function showToast(msg, isError = false) {
-            const toast = document.getElementById('toast');
-            toast.style.backgroundColor = isError ? '#dc2626' : '#0f172a';
-            toast.textContent = msg;
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 3000);
-        }
-
-        // LOGIN HANDLER
         document.getElementById('loginForm').addEventListener('submit', (e) => {
             e.preventDefault();
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value;
-            
-            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+            const user = document.getElementById('username').value.trim();
+            const pass = document.getElementById('password').value;
+            if (user === ADMIN_USERNAME && pass === ADMIN_PASSWORD) {
                 sessionStorage.setItem('adminAuthenticated', 'true');
-                showToast('✅ Access granted. Welcome Administrator!');
+                showToast('✅ Welcome back, Administrator');
                 checkAuth();
                 document.getElementById('loginError').style.display = 'none';
             } else {
                 document.getElementById('loginError').style.display = 'block';
-                setTimeout(() => {
-                    document.getElementById('loginError').style.display = 'none';
-                }, 3000);
+                setTimeout(() => document.getElementById('loginError').style.display = 'none', 2500);
             }
         });
 
-        function logout() {
-            sessionStorage.removeItem('adminAuthenticated');
-            checkAuth();
-            showToast('🔒 Logged out successfully');
-        }
+        function logout() { sessionStorage.removeItem('adminAuthenticated'); checkAuth(); showToast('🔒 Logged out securely'); }
 
-        // ============ FIREBASE CRUD OPERATIONS ============
         async function loadDashboardStats() {
             const collections = ['properties', 'inquiries', 'contacts', 'subscribers'];
             const stats = {};
@@ -567,10 +609,10 @@
                 stats[col] = snap.size;
             }
             document.getElementById('statsGrid').innerHTML = `
-                <div class="stat-card"><div><h4 style="font-size:0.75rem;">🏠 Properties</h4><div class="stat-number">${stats.properties || 0}</div></div><i class="fas fa-building" style="font-size:2rem; color:#c2a15b;"></i></div>
-                <div class="stat-card"><div><h4 style="font-size:0.75rem;">📋 Inquiries</h4><div class="stat-number">${stats.inquiries || 0}</div></div><i class="fas fa-envelope" style="font-size:2rem; color:#c2a15b;"></i></div>
-                <div class="stat-card"><div><h4 style="font-size:0.75rem;">📞 Contacts</h4><div class="stat-number">${stats.contacts || 0}</div></div><i class="fas fa-phone" style="font-size:2rem; color:#c2a15b;"></i></div>
-                <div class="stat-card"><div><h4 style="font-size:0.75rem;">👥 Subscribers</h4><div class="stat-number">${stats.subscribers || 0}</div></div><i class="fas fa-users" style="font-size:2rem; color:#c2a15b;"></i></div>
+                <div class="stat-card"><div><span style="font-size:0.7rem; font-weight:600;">🏠 PROPERTIES</span><div class="stat-number">${stats.properties || 0}</div></div><i class="fas fa-building" style="font-size:2rem; opacity:0.6;"></i></div>
+                <div class="stat-card"><div><span style="font-size:0.7rem;">📋 INQUIRIES</span><div class="stat-number">${stats.inquiries || 0}</div></div><i class="fas fa-envelope" style="font-size:2rem;"></i></div>
+                <div class="stat-card"><div><span style="font-size:0.7rem;">📞 CONTACTS</span><div class="stat-number">${stats.contacts || 0}</div></div><i class="fas fa-phone" style="font-size:2rem;"></i></div>
+                <div class="stat-card"><div><span style="font-size:0.7rem;">👥 SUBSCRIBERS</span><div class="stat-number">${stats.subscribers || 0}</div></div><i class="fas fa-users" style="font-size:2rem;"></i></div>
             `;
         }
 
@@ -579,12 +621,13 @@
             let docs = [];
             snapshot.forEach(doc => {
                 let data = doc.data();
-                if (data.timestamp) {
-                    if (typeof data.timestamp === 'string') data.timestamp_formatted = new Date(data.timestamp).toLocaleString();
-                    else if (data.timestamp.toDate) data.timestamp_formatted = data.timestamp.toDate().toLocaleString();
-                    else data.timestamp_formatted = '—';
-                } else data.timestamp_formatted = '—';
-                docs.push({ id: doc.id, ...data });
+                let formatted = '—';
+                let rawTs = data.timestamp;
+                if (rawTs) {
+                    if (typeof rawTs === 'string') formatted = new Date(rawTs).toLocaleString();
+                    else if (rawTs.toDate) formatted = rawTs.toDate().toLocaleString();
+                }
+                docs.push({ id: doc.id, ...data, _timestamp_display: formatted });
             });
             return docs;
         }
@@ -597,55 +640,71 @@
             return [];
         }
 
-        function getFieldLabel(field) {
-            const labels = { title:'Title', price:'Price (₹)', location:'Location', type:'Type', bedrooms:'Beds', bathrooms:'Baths', area:'Sqft', status:'Status', imageUrl:'Image URL', name:'Name', email:'Email', phone:'Phone', budget:'Budget', requirements:'Requirements', message:'Message' };
-            return labels[field] || field;
+        function getFieldLabel(f) {
+            const map = { title:'Title', price:'Price (₹)', location:'Location', type:'Type', bedrooms:'Beds', bathrooms:'Baths', area:'Sqft', status:'Status', imageUrl:'Image URL', name:'Name', email:'Email', phone:'Phone', budget:'Budget', requirements:'Requirements', message:'Message' };
+            return map[f] || f;
         }
 
         function renderTable(collectionName, docs, searchTerm = '') {
-            const filtered = docs.filter(doc => {
-                if (!searchTerm) return true;
-                return JSON.stringify(doc).toLowerCase().includes(searchTerm.toLowerCase());
-            });
-            if (filtered.length === 0) {
-                document.getElementById('dynamicTable').innerHTML = '<div style="padding:2rem; text-align:center;">✨ No records found.</div>';
+            const filtered = docs.filter(d => JSON.stringify(d).toLowerCase().includes(searchTerm.toLowerCase()));
+            if (!filtered.length) {
+                document.getElementById('dynamicTable').innerHTML = '<div style="padding:3rem; text-align:center; opacity:0.7;">✨ No records found. Click "Add Record" to create.</div>';
                 return;
             }
             const fields = getSchemaFields(collectionName);
-            let html = `<table><thead><tr><th>ID</th>${fields.map(f => `<th>${getFieldLabel(f)}</th>`).join('')}<th>Actions</th></tr></thead><tbody>`;
+            let html = `<table style="width:100%"><thead><tr><th>ID</th>${fields.map(f => `<th>${getFieldLabel(f)}</th>`).join('')}<th style="width:90px">Actions</th></tr></thead><tbody>`;
             filtered.forEach(doc => {
-                let row = `<td style="font-family:monospace; font-size:11px;">${doc.id.substring(0,8)}...${doc.id.slice(-4)}</td>`;
-                for (let field of fields) {
-                    let value = doc[field];
-                    if (field === 'status') {
-                        let statusClass = 'status-new';
-                        if (value === 'contacted') statusClass = 'status-contacted';
-                        else if (value === 'converted') statusClass = 'status-converted';
-                        value = `<span class="status-badge ${statusClass}">${value || 'new'}</span>`;
-                    } else if (field === 'price' && typeof value === 'number') {
-                        value = `₹ ${value.toLocaleString('en-IN')}`;
-                    } else if (field === 'timestamp' && doc.timestamp_formatted) {
-                        value = doc.timestamp_formatted;
-                    } else if (!value) value = '—';
-                    if (typeof value === 'string' && value.length > 35) value = value.substring(0, 35) + '…';
-                    row += `<td>${value}</td>`;
+                let row = `<td style="font-size:11px; font-family:monospace;">${doc.id.slice(0,6)}...${doc.id.slice(-4)}</td>`;
+                for (let f of fields) {
+                    let val = doc[f];
+                    if (f === 'status') {
+                        let cls = 'status-new';
+                        if (val === 'contacted') cls = 'status-contacted';
+                        else if (val === 'converted') cls = 'status-converted';
+                        val = `<span class="status-badge ${cls}">${val || 'new'}</span>`;
+                    } else if (f === 'price' && typeof val === 'number') val = `₹ ${val.toLocaleString('en-IN')}`;
+                    else if (!val && val !== 0) val = '—';
+                    else if (typeof val === 'string' && val.length > 45) val = val.substring(0, 42) + '…';
+                    row += `<td>${val}</td>`;
                 }
-                row += `<td class="action-icons">
-                            <i class="fas fa-edit" onclick="editRecord('${collectionName}', '${doc.id}')"></i>
-                            <i class="fas fa-trash-alt" onclick="deleteRecord('${collectionName}', '${doc.id}')"></i>
-                        </td>`;
+                row += `<td class="action-icons"><i class="fas fa-edit" onclick="editRecord('${collectionName}','${doc.id}')"></i> <i class="fas fa-trash-alt" onclick="deleteRecord('${collectionName}','${doc.id}')"></i></td>`;
                 html += `<tr>${row}</tr>`;
             });
             html += `</tbody></table>`;
             document.getElementById('dynamicTable').innerHTML = html;
         }
 
+        function exportCollectionToExcel() {
+            if (!currentCollection || currentCollection === 'dashboard') { showToast("Please open a collection (Properties/Inquiries/Contacts)", true); return; }
+            const searchVal = document.getElementById('tableSearch')?.value || '';
+            let filtered = allDocs;
+            if (searchVal) filtered = allDocs.filter(d => JSON.stringify(d).toLowerCase().includes(searchVal.toLowerCase()));
+            if (!filtered.length) { showToast("No data to export", true); return; }
+            const fields = getSchemaFields(currentCollection);
+            const headers = ['Record ID', ...fields.map(f => getFieldLabel(f)), 'Timestamp'];
+            const rows = filtered.map(doc => {
+                const row = [doc.id];
+                for (let f of fields) {
+                    let val = doc[f];
+                    if (val === undefined) val = '';
+                    row.push(val);
+                }
+                row.push(doc._timestamp_display || doc.timestamp || '');
+                return row;
+            });
+            const ws = XLSX.utils.aoa_to_sheet([headers, ...rows]);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, `${currentCollection}_leads`);
+            XLSX.writeFile(wb, `luxury_estates_${currentCollection}_${new Date().toISOString().slice(0,19)}.xlsx`);
+            showToast(`📎 Exported ${filtered.length} records`);
+        }
+
         async function loadCollectionUI(collectionName) {
             currentCollection = collectionName;
             document.getElementById('dashboardView').style.display = 'none';
             document.getElementById('collectionView').style.display = 'block';
-            document.getElementById('collectionTitle').innerHTML = `<i class="fas fa-table"></i> ${collectionName.toUpperCase()} Collection`;
-            document.getElementById('currentPageTitle').innerText = `Manage: ${collectionName}`;
+            document.getElementById('collectionTitle').innerHTML = `<i class="fas fa-database"></i> ${collectionName.toUpperCase()} Management`;
+            document.getElementById('currentPageTitle').innerText = `${collectionName.charAt(0).toUpperCase() + collectionName.slice(1)} Manager`;
             const docs = await fetchCollectionData(collectionName);
             allDocs = docs;
             renderTable(collectionName, docs, document.getElementById('tableSearch')?.value || '');
@@ -655,7 +714,7 @@
             if (col === 'dashboard') {
                 document.getElementById('dashboardView').style.display = 'block';
                 document.getElementById('collectionView').style.display = 'none';
-                document.getElementById('currentPageTitle').innerText = 'Secure Dashboard';
+                document.getElementById('currentPageTitle').innerText = 'Command Center';
                 loadDashboardStats();
             } else {
                 loadCollectionUI(col);
@@ -668,88 +727,70 @@
         function openModalForCollection(collection, existingData = null) {
             const fields = getSchemaFields(collection);
             let html = '';
-            for (let field of fields) {
-                let value = existingData ? (existingData[field] !== undefined ? existingData[field] : '') : '';
-                if (field === 'status') {
-                    let options = '';
-                    if (collection === 'properties') options = `<option value="available">available</option><option value="booked">booked</option><option value="sold">sold</option>`;
-                    else options = `<option value="new">new</option><option value="contacted">contacted</option><option value="converted">converted</option>`;
-                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><select id="field_${field}">${options}</select></div>`;
-                    setTimeout(() => { const sel = document.getElementById(`field_${field}`); if(sel && value) sel.value = value; }, 50);
-                } else if (field === 'price' || field === 'bedrooms' || field === 'bathrooms' || field === 'area') {
-                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><input type="number" id="field_${field}" value="${value || 0}"></div>`;
-                } else if (field === 'message' || field === 'requirements') {
-                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><textarea id="field_${field}" rows="2">${value || ''}</textarea></div>`;
+            for (let f of fields) {
+                let value = existingData ? (existingData[f] !== undefined ? existingData[f] : '') : '';
+                if (f === 'status') {
+                    let opts = (collection === 'properties') ? `<option value="available">available</option><option value="booked">booked</option><option value="sold">sold</option>` : `<option value="new">new</option><option value="contacted">contacted</option><option value="converted">converted</option>`;
+                    html += `<div class="form-group"><label>${getFieldLabel(f)}</label><select id="field_${f}">${opts}</select></div>`;
+                    setTimeout(() => { let sel = document.getElementById(`field_${f}`); if(sel && value) sel.value = value; }, 30);
+                } else if (['price','bedrooms','bathrooms','area'].includes(f)) {
+                    html += `<div class="form-group"><label>${getFieldLabel(f)}</label><input type="number" id="field_${f}" value="${value || 0}"></div>`;
+                } else if (f === 'message' || f === 'requirements') {
+                    html += `<div class="form-group"><label>${getFieldLabel(f)}</label><textarea id="field_${f}" rows="2">${value || ''}</textarea></div>`;
                 } else {
-                    html += `<div class="form-group"><label>${getFieldLabel(field)}</label><input type="text" id="field_${field}" value="${value || ''}"></div>`;
+                    html += `<div class="form-group"><label>${getFieldLabel(f)}</label><input type="text" id="field_${f}" value="${value || ''}"></div>`;
                 }
             }
             document.getElementById('dynamicFormFields').innerHTML = html;
-            document.getElementById('modalTitle').innerText = existingData ? `Edit ${collection} record` : `Add New ${collection}`;
+            document.getElementById('modalTitle').innerText = existingData ? `✏️ Edit ${collection}` : `➕ Add New ${collection}`;
             document.getElementById('recordModal').style.display = 'block';
+            document.getElementById('recordId').value = existingData?.id || '';
         }
 
         window.editRecord = async (collection, docId) => {
-            const docSnap = await db.collection(collection).doc(docId).get();
-            openModalForCollection(collection, { id: docId, ...docSnap.data() });
-            document.getElementById('recordId').value = docId;
+            const snap = await db.collection(collection).doc(docId).get();
+            openModalForCollection(collection, { id: docId, ...snap.data() });
         };
-
         window.deleteRecord = async (collection, docId) => {
-            if (confirm('⚠️ Permanently delete this record? This action cannot be undone.')) {
+            if (confirm('⚠️ Delete this record permanently? This action cannot be undone.')) {
                 await db.collection(collection).doc(docId).delete();
-                showToast(`🗑️ Deleted from ${collection}`);
+                showToast(`🗑 Deleted from ${collection}`);
                 if (currentCollection === collection) await loadCollectionUI(collection);
                 else loadDashboardStats();
             }
         };
-
-        function closeModal() {
-            document.getElementById('recordModal').style.display = 'none';
-            document.getElementById('recordForm').reset();
-            document.getElementById('recordId').value = '';
-        }
-
+        function closeModal() { document.getElementById('recordModal').style.display = 'none'; document.getElementById('recordForm').reset(); document.getElementById('recordId').value = ''; }
         document.getElementById('recordForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const collection = currentCollection;
             const docId = document.getElementById('recordId').value;
             const fields = getSchemaFields(collection);
             let updateData = { timestamp: new Date().toISOString() };
-            for (let field of fields) {
-                const el = document.getElementById(`field_${field}`);
+            for (let f of fields) {
+                const el = document.getElementById(`field_${f}`);
                 if (el) {
                     let val = el.value;
-                    if (field === 'price' || field === 'bedrooms' || field === 'bathrooms' || field === 'area') val = parseFloat(val) || 0;
-                    updateData[field] = val;
+                    if (['price','bedrooms','bathrooms','area'].includes(f)) val = parseFloat(val) || 0;
+                    updateData[f] = val;
                 }
             }
             try {
-                if (docId) {
-                    await db.collection(collection).doc(docId).update(updateData);
-                    showToast(`✅ ${collection} record updated`);
-                } else {
-                    await db.collection(collection).add(updateData);
-                    showToast(`✅ New record added to ${collection}`);
-                }
+                if (docId) { await db.collection(collection).doc(docId).update(updateData); showToast(`✅ ${collection} record updated`); }
+                else { await db.collection(collection).add(updateData); showToast(`✨ New record added to ${collection}`); }
                 closeModal();
                 if (currentCollection !== 'dashboard') await loadCollectionUI(currentCollection);
                 else loadDashboardStats();
             } catch(err) { showToast(`Error: ${err.message}`, true); }
         });
 
-        document.getElementById('addNewBtn')?.addEventListener('click', () => {
-            if (currentCollection && currentCollection !== 'dashboard') openModalForCollection(currentCollection, null);
-        });
-        document.getElementById('refreshTableBtn')?.addEventListener('click', async () => {
-            if (currentCollection && currentCollection !== 'dashboard') await loadCollectionUI(currentCollection);
-        });
-        document.getElementById('tableSearch')?.addEventListener('input', (e) => {
-            if (allDocs && currentCollection !== 'dashboard') renderTable(currentCollection, allDocs, e.target.value);
-        });
+        document.getElementById('addNewBtn')?.addEventListener('click', () => { if(currentCollection && currentCollection !== 'dashboard') openModalForCollection(currentCollection, null); });
+        document.getElementById('refreshTableBtn')?.addEventListener('click', async () => { if(currentCollection && currentCollection !== 'dashboard') await loadCollectionUI(currentCollection); });
+        document.getElementById('tableSearch')?.addEventListener('input', (e) => { if(allDocs && currentCollection !== 'dashboard') renderTable(currentCollection, allDocs, e.target.value); });
+        document.getElementById('exportExcelBtn')?.addEventListener('click', exportCollectionToExcel);
         window.closeModal = closeModal;
 
-        // Initialize auth check
+        // Initialize
+        loadSavedTheme();
         checkAuth();
     </script>
 </body>
